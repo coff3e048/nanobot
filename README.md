@@ -5,4 +5,5 @@ nanobot is a general purpose Discord bot written in Python. This bot is not cons
 # Dependencies
 
 `pip install -U nextcord psutil colorama python-dotenv`
+
 are dependencies that are required to run nanobot in its current state.
