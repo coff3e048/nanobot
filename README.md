@@ -3,7 +3,7 @@
 nanobot is a small but (soon to be) feature rich general purpose Discord bot written in Python. This bot is not considered usable or stable at the moment, so contributions are welcome 
 
 ## Running
-Running this bot requires an .env
+Running this bot requires an `.env` file
 Heres an example:
 ```
 TOKEN='bunchoflettersandwhatnot
