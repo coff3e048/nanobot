@@ -2,7 +2,20 @@
 
 nanobot is a small but (soon to be) feature rich general purpose Discord bot written in Python. This bot is not considered usable or stable at the moment, so contributions are welcome 
 
-# Dependencies
+## Running
+Running this bot requires an .env
+Heres an example:
+```
+TOKEN='bunchoflettersandwhatnot
+PREFIX='!!'
+# Bot invite
+INVITE='https://discord.com/oauth2/***
+# Source code page
+SOURCEPAGE='https://github.com/pascal48/nanobot'
+```
+The bot will not run without these, in the future 'INVITE' and 'SOURCEPAGE' will be optional.
+
+## Dependencies
 
 `pip install -U nextcord psutil colorama python-dotenv`
 
