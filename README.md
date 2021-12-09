@@ -14,3 +14,4 @@ are dependencies that are required to run nanobot in its current state.
 - Create guild-specific data (custom prefix, RSS, etc)
 - More "fun" commands
 - Slash commands?
+- Sort cogs into folders 
