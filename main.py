@@ -38,7 +38,6 @@ bot = commands.Bot(
     ),
 )
 
-bot.load_extension("cogmgmt")
 bot.load_extension("base")
 bot.load_extension("fun")
 bot.load_extension("snipe")
