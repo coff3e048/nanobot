@@ -3,6 +3,8 @@
 nanobot is a small but (soon to be) feature rich general purpose Discord bot written in Python. This bot is not considered usable or stable at the moment, so contributions are welcome 
 
 ## Running
+Running the bot is as simple as `python main.py`
+
 Running this bot requires an `.env` file
 Heres an example:
 ```
@@ -17,7 +19,7 @@ The bot will not run without these, in the future 'INVITE' and 'SOURCEPAGE' will
 
 ## Dependencies
 
-`pip install -U nextcord psutil colorama python-dotenv`
+`python3 -m pip install -U nextcord psutil python-dotenv colorama`
 
 are dependencies that are required to run nanobot in its current state.
 
