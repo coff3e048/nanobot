@@ -1,11 +1,12 @@
-import time, os, logging
+import time, os, logging, json
+from cogmgmt import cogService
 
 #Log the amount of time it takes to start the bot
 start_time = time.time()
 
 import discord
 from nextcord.ext import commands
-from colorama import Fore, Back, Style
+from colorama import Fore, Back, Style # Foreground colors are like Fore.COLOR
 from dotenv import load_dotenv
 from os import getenv
 load_dotenv()
@@ -18,12 +19,14 @@ print("Starting...")
 logenv = getenv('LOGGING')
 if logenv == 'True':
     print("Logfile Enabled.")
+    # I'm worried this logfile could get really big, so I would probably not use this yet.
     logger = logging.getLogger('nextcord')
     logger.setLevel(logging.DEBUG)
     handler = logging.FileHandler(filename='nextcord.log', encoding='utf-8', mode='w')
     handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
     logger.addHandler(handler)
 else:
+    # If LOGGING is anything other than True, disable it.
     print("Logfile Disabled.")
 
 prefix = getenv('PREFIX')
@@ -38,23 +41,42 @@ bot = commands.Bot(
     ),
 )
 
-bot.load_extension("base")
-bot.load_extension("fun")
-bot.load_extension("snipe")
-bot.load_extension("errorhandler")
-bot.load_extension("youtube")
+_author_ = "coff3e"
+_version_ = "DEV-mmddyyyy"
+
+def cogservice():
+  try: 
+    for cogs in cogService.cogsenabled:
+      print(f"{Fore.YELLOW}loading {cogs}")
+      bot.load_extension(cogs)
+  except Exception as e:
+    print(f"{Fore.RED}Could not load enabled cogs")
+    print(" - {}".format(e))
+    # Kill the process to avoid constant reloads
+    exit()
+    
 
 @bot.event
 async def on_ready():
-    print(f'Logged in as {bot.user} \n(ID: {bot.user.id})')
-    
+    cogservice()
 
-    guilds = await bot.fetch_guilds(limit=150).flatten()
-    print(f"{Style.DIM}Joined guilds:\n{Style.RESET_ALL}" + str(guilds) + "\n")
-    print(guilds)
+    print(
+      f'\n{Fore.GREEN}Logged in as {bot.user} \n{Style.DIM}User ID: {bot.user.id}{Style.RESET_ALL}'
+      )
+    
+    guildfetch = await bot.fetch_guilds(limit=150).flatten()
+    
+    guildlist = (
+      f"\n{Style.DIM}Joined guilds:\n{Style.RESET_ALL}" + str(guildfetch)
+      )
+    print(guildlist)
 
     end_time = time.time()
-    print(f"{Style.DIM}\nTook {round((end_time - start_time) * 1000)}ms to startup{Style.RESET_ALL}")
+    print(
+      f"{Style.DIM}\nTook {round((end_time - start_time) * 1000)}ms to startup{Style.RESET_ALL}"
+      )
+    
+    await bot.change_presence(activity=discord.Game(name="シ"))
     
 
 # Loading TOKEN from .env

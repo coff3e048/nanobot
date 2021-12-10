@@ -1,18 +1,14 @@
 import time, psutil, os
 import discord
 from nextcord.ext import commands
-
-
-
-# loaded pretty much just for the invite command
 from dotenv import load_dotenv
+
 from os import getenv
 load_dotenv()
 
 
 class baseCommands(commands.Cog):
     """A couple of simple commands."""
-    
     
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -22,6 +18,7 @@ class baseCommands(commands.Cog):
     @commands.is_owner()
     async def shutdown(self, ctx: commands.Context):
       await ctx.reply("Exiting...")
+      self.bot.change_presence(activity=discord.Game(name="Shutting down..."))
       exit()
 
     @commands.command(name="setstatus")
@@ -29,7 +26,6 @@ class baseCommands(commands.Cog):
     async def setstatus(self, ctx: commands.Context, *, text: str):
       """Set the bot's status."""
       await self.bot.change_presence(activity=discord.Game(name=text))
-
 
     # Super basic commands
     @commands.command(name="hello")
@@ -43,7 +39,8 @@ class baseCommands(commands.Cog):
 
     @commands.command(name="source")
     async def license(self, ctx: commands.Context):
-      await ctx.send("nanobot utilizes the GNU General Public License v3 in its source code, and is fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <https://github.com/pascal48/nanobot>")
+      gitpage = getenv('SOURCEPAGE')
+      await ctx.send(f"nanobot is released under the GNU General Public License (GPL v3), making it fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <{gitpage}>")
 
     @commands.command(name="ping")
     async def ping(self, ctx: commands.Context):
@@ -59,11 +56,9 @@ class baseCommands(commands.Cog):
       givetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.create_time()))
       await ctx.reply(f"```Up since:\n{givetime}```")
 
-
     @commands.command(name="say")
     async def say(self, ctx: commands.Context, *, text: str):
       await ctx.send(text)
-
 
 
 def setup(bot: commands.Bot):
