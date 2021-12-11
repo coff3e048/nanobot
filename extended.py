@@ -3,7 +3,7 @@ import re
 from nextcord.ext import commands
 
 
-class eCommands(commands.Cog):
+class extended(commands.Cog):
     """Search YouTube for videos."""
 
     def __init__(self, bot):
@@ -41,7 +41,5 @@ class eCommands(commands.Cog):
         else:
             await ctx.reply("Nothing found. Try again later.")
 
-
-
 def setup(bot: commands.Bot):
-    bot.add_cog(eCommands(bot))
+    bot.add_cog(extended(bot))

@@ -7,14 +7,14 @@ from os import getenv
 load_dotenv()
 
 
-class baseCommands(commands.Cog):
+class Base(commands.Cog):
     """A couple of simple commands."""
     
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     # Commands only the bot owner can use
-    @commands.command(name="shutdown")
+    @commands.command(name="shutdown", aliases=["exit"])
     @commands.is_owner()
     async def shutdown(self, ctx: commands.Context):
       await ctx.reply("Exiting...")
@@ -32,25 +32,26 @@ class baseCommands(commands.Cog):
     async def hello_world(self, ctx: commands.Context):
       await ctx.reply("Hello, world!")
 
-    @commands.command(name="invite")
+    @commands.command(name="invite", aliases=["bot"])
     async def invite(self, ctx: commands.Context):
       inviteurl = getenv('INVITE')
-      await ctx.author.send(f"Please note. This bot is in its very early stages of development. There will be bugs and possibly vulnerabilities.\n\nUse at your own risk\n {inviteurl}")
+      await ctx.author.send(f"Please note. This bot is in its very early stages of development. There will be bugs and possibly vulnerabilities.\n\nUse at your own risk\n{inviteurl}")
 
-    @commands.command(name="source")
+    @commands.command(name="source", aliases=["license"])
     async def license(self, ctx: commands.Context):
       gitpage = getenv('SOURCEPAGE')
-      await ctx.send(f"nanobot is released under the GNU General Public License (GPL v3), making it fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <{gitpage}>")
+      await ctx.author.send(f"nanobot is released under the GNU General Public License (GPL v3), making it fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <{gitpage}>")
 
     @commands.command(name="ping")
+    @commands.cooldown(1, 10, commands.BucketType.guild)
     async def ping(self, ctx: commands.Context):
       """Get the bot's current websocket & API latency."""
       start_time = time.time()
-      message = await ctx.send("Sending ping...", delete_after=2)
+      message = await ctx.send("pinging")
       end_time = time.time()
-      await ctx.reply(f"Pong!: {round(self.bot.latency * 1000)}ms\nAPI: {round((end_time - start_time) * 1000)}ms") # It's now self.bot.latency
+      await message.edit(f"Pong!: {round(self.bot.latency * 1000)}ms\nAPI: {round((end_time - start_time) * 1000)}ms") # It's now self.bot.latency
 
-    @commands.command(name="uptime")
+    @commands.command(name="uptime", alises=["up"])
     async def uptime(self, ctx: commands.Context):
       p = psutil.Process(os.getpid())
       givetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.create_time()))
@@ -60,6 +61,10 @@ class baseCommands(commands.Cog):
     async def say(self, ctx: commands.Context, *, text: str):
       await ctx.send(text)
 
+    @commands.command(name="avatar", aliases=["pfp","a"])
+    async def avatar(self, ctx, member:discord.Member):
+      await ctx.reply(member.avatar_url)
+
 
 def setup(bot: commands.Bot):
-    bot.add_cog(baseCommands(bot))
+    bot.add_cog(Base(bot))

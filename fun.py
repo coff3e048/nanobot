@@ -1,9 +1,9 @@
-import time, random, asyncio
+import time, random, asyncio, cowsay
 import discord
 from nextcord.ext import commands
 
 
-class funCommands(commands.Cog):
+class fun(commands.Cog):
     """A couple of simple commands."""
 
     def __init__(self, bot: commands.Bot):
@@ -23,7 +23,7 @@ class funCommands(commands.Cog):
         message = await ctx.reply(':8ball: *Rolling...*')
         await asyncio.sleep(1)
         await message.edit(f':8ball: {(random.choice(responses))}')
-      
+
 
 def setup(bot: commands.Bot):
-    bot.add_cog(funCommands(bot))
+    bot.add_cog(fun(bot))
