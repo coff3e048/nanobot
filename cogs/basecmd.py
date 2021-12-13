@@ -23,9 +23,8 @@ class Base(commands.Cog):
 
     @commands.command(name="setstatus")
     @commands.is_owner()  
-    async def setstatus(self, ctx: commands.Context, *, text: str):
-      """Set the bot's status."""
-      await self.bot.change_presence(activity=discord.Game(name=text))
+    async def set(self, ctx: commands.Context, *, text: str):
+      await ctx.reply("Set not a working command yet")
 
     # Super basic commands
     @commands.command(name="hello")
@@ -40,7 +39,9 @@ class Base(commands.Cog):
     @commands.command(name="source", aliases=["license"])
     async def license(self, ctx: commands.Context):
       gitpage = getenv('SOURCEPAGE')
-      await ctx.author.send(f"nanobot is released under the GNU General Public License (GPL v3), making it fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <{gitpage}>")
+      if gitpage == None:
+        gitpage = "https://github.com/pascal48/nanobot"
+      await ctx.reply(f"nanobot is released under the GNU General Public License (GPL v3), making it fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <{gitpage}>")
 
     @commands.command(name="ping")
     @commands.cooldown(1, 10, commands.BucketType.guild)
@@ -62,8 +63,10 @@ class Base(commands.Cog):
       await ctx.send(text)
 
     @commands.command(name="avatar", aliases=["pfp","a"])
-    async def avatar(self, ctx, member:discord.Member):
-      await ctx.reply(member.avatar_url)
+    async def avatar(self, ctx,):
+      member = ctx.author
+      userAvatarUrl = member.avatar_url
+      await ctx.reply(avatarUserUrl)
 
 
 def setup(bot: commands.Bot):

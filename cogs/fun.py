@@ -1,6 +1,7 @@
 import time, random, asyncio, cowsay
 import discord
 from nextcord.ext import commands
+from art import text2art
 
 
 class fun(commands.Cog):
@@ -10,8 +11,11 @@ class fun(commands.Cog):
       self.bot = bot
 
     @commands.command(name="roll")
-    async def roll(self, ctx:commands.Context, first: int, second: int):
-      await ctx.reply(f"{random.randint(first,second)}")
+    async def roll(self, ctx, *,first: int, second: int):
+      if first and second == None:
+        await ctx.reply(f"{random.randint(1,100)}")
+      else:
+        await ctx.reply(f"{random.randint(first,second)}")
 
     @commands.command(name="choose")
     async def choose(self, ctx: commands.Context, *, text: str):
@@ -23,6 +27,11 @@ class fun(commands.Cog):
         message = await ctx.reply(':8ball: *Rolling...*')
         await asyncio.sleep(1)
         await message.edit(f':8ball: {(random.choice(responses))}')
+
+    @commands.command(name="ascii")
+    async def ascii(self, ctx: commands.Context, *, text:str):
+      textart = text2art(text)
+      await ctx.reply(f"```{textart}```")
 
 
 def setup(bot: commands.Bot):
