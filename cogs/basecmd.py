@@ -58,10 +58,6 @@ class Base(commands.Cog):
       givetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.create_time()))
       await ctx.reply(f"```Up since:\n{givetime}```")
 
-    @commands.command(name="say")
-    async def say(self, ctx: commands.Context, *, text: str):
-      await ctx.send(text)
-
     @commands.command(name="avatar", aliases=["pfp","a"])
     async def avatar(self, ctx,):
       member = ctx.author

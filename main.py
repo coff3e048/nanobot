@@ -36,10 +36,6 @@ prefix = getenv('PREFIX')
 if prefix == None:
   prefix = "!!"
   print(f"{Fore.YELLOW}No prefix set. Defaulting to '{prefix}'{Style.RESET_ALL}")
-# Default status
-envstatus = getenv('STATUS')
-if envstatus == None:
-  envstatus = " "
 # Github source page
 sourcepage = getenv('SOURCEPAGE')
 if sourcepage == None:
@@ -73,7 +69,7 @@ bot = commands.Bot(
 
 _author_ = "coff3e"
 _name_ = botname
-_version_ = "DEV-A-12132021"
+_version_ = "DEV-12132021"
 
 
 def cogservice():
@@ -123,11 +119,12 @@ async def on_ready():
 
     #printing the time it took to start the bot
     end_time = time.time()
-    print(f"{Style.DIM}\nTook {round((end_time - start_time) * 1000)}ms ({round((end_time - start_time) * 1)}s) to start-up{Style.RESET_ALL}")
+    print(f"{Style.DIM}\nTook {round((end_time - start_time) * 1000)}ms ({round((end_time - start_time) * 1)}s) to start-up")
 
     #set the bot status and then screw off
     try:
-      await bot.change_presence(activity=discord.Game(name=envstatus))
+      await bot.change_presence(activity=discord.Game(name=prefix))
+      print(f"Set bot status as {prefix}{Style.RESET_ALL}")
     except Exception as e:
       print(f"{Fore.RED}Setting bot status failed.\n{e}")
 

@@ -29,7 +29,7 @@ class fun(commands.Cog):
         await message.edit(f':8ball: {(random.choice(responses))}')
 
     @commands.command(name="ascii")
-    async def ascii(self, ctx: commands.Context, *, text:str):
+    async def ascii(self, ctx: commands.Context, *, text: str):
       textart = text2art(text)
       await ctx.reply(f"```{textart}```")
 

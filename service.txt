@@ -3,3 +3,4 @@ errorhandler
 cogs.basecmd
 cogs.extended
 cogs.fun
+cogs.cowsay

@@ -37,7 +37,10 @@ class YouTube(commands.Cog):
             await ctx.reply(result[0])
         else:
             await ctx.reply("Nothing found. Try again later.")
-
+    
+    @commands.command()
+    async def ytdl(self, ctx, *, query: str):
+      
 
 def setup(bot: commands.Bot):
     bot.add_cog(YouTube(bot))

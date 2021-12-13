@@ -23,6 +23,7 @@ class ErrorHandler(commands.Cog):
         server = "Direct Message"
       user = ctx.author
       command = ctx.command
+      # Log the listening event in the terminal interface
       print(f'{xtime}{Style.DIM} | INFO: ({server}) {user} used {command}{Style.RESET_ALL}')
 
 
@@ -33,27 +34,32 @@ class ErrorHandler(commands.Cog):
         if isinstance(error, commands.CommandNotFound):
             reaction = '❔'
         elif isinstance(error, commands.CommandOnCooldown):
-            reaction = '❄'
             reply = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds.\n```error: {error}```"
+            reaction = '❄'
         elif isinstance(error, commands.MissingPermissions):
-            reaction = '🚫'
             reply = f"You do not have the required permissions to run this command.\n ```error: {error}```"
+            reaction = '🚫'
         elif isinstance(error, commands.UserInputError):
-            reaction = '❕'
             reply = f"User input error. Enter command arguments. \n ```error: {error}```"
+            reaction = '❕'
         elif isinstance(error, commands.MissingRequiredArgument):
-            reaction = '❓'
             reply = f"Missing a required argument: {error.param}\n ```error: {error}```"
+            reaction = '❓'
         elif isinstance(error, commands.NotOwner):
+            #reply = f"Only the bot owner can use this command.\n ```error: {error}```"
             reaction = '😳'
-            reply = f"Only the bot owner can use this command.\n ```error: {error}```"
         else:
             reply = f"Something went wrong trying to use this command.\n ```error: {error}```"
 
-        embed = discord.Embed(title="Command Error", description=reply, colour=Colour.red())
-        errorreply = await ctx.reply(embed=embed, delete_after=10)
-        await ctx.message.add_reaction(reaction)
+        errorembed = discord.Embed(title=f"Command Error", description=reply, colour=Colour.red())
+        try:
+          await ctx.message.add_reaction(reaction)
+          await ctx.reply(embed=errorembed)
+        except:
+          pass
 
+
+        # Log the error in the terminal interface
         x = datetime.datetime.now()
         xtime = x.strftime("%X")
         try:
@@ -62,7 +68,7 @@ class ErrorHandler(commands.Cog):
           server = "Direct Message"
         user = ctx.author
         command = ctx.command
-        print(f'{xtime}{Fore.RED} | ERRO: ({server}) {user} used {command} but failed with {error}{Style.RESET_ALL}')
+        print(f'{xtime}{Fore.RED} | ERRO: ({server}) {user} used {command} but failed with: {error}{Style.RESET_ALL}')
 
 def setup(bot: commands.Bot):
     bot.add_cog(ErrorHandler(bot))
