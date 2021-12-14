@@ -3,7 +3,7 @@ import re
 from nextcord.ext import commands
 
 
-class extended(commands.Cog):
+class Extended(commands.Cog):
     """Search YouTube for videos."""
 
     def __init__(self, bot):
@@ -32,7 +32,7 @@ class extended(commands.Cog):
 
         return url_list
 
-    @commands.command(name="yt")
+    @commands.command(name="youtube", alias=["yt"])
     async def youtube(self, ctx, *, query: str):
         """Search on Youtube."""
         result = await self._youtube_results(query)
@@ -42,4 +42,4 @@ class extended(commands.Cog):
             await ctx.reply("Nothing found. Try again later.")
 
 def setup(bot: commands.Bot):
-    bot.add_cog(extended(bot))
+    bot.add_cog(Extended(bot))

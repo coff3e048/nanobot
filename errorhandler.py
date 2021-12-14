@@ -1,5 +1,4 @@
 import colorama, datetime
-
 import discord
 from discord import Colour
 from nextcord.ext import commands
@@ -31,30 +30,33 @@ class ErrorHandler(commands.Cog):
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError):
         """A global error handler cog."""
 
+
         if isinstance(error, commands.CommandNotFound):
-            reaction = '❔'
+            response = f"This command doesn't exist."
+            reaction = '❓'
         elif isinstance(error, commands.CommandOnCooldown):
-            reply = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds.\n```error: {error}```"
+            response = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds.\n```error: {error}```"
             reaction = '❄'
         elif isinstance(error, commands.MissingPermissions):
-            reply = f"You do not have the required permissions to run this command.\n ```error: {error}```"
+            response = f"You do not have the required permissions to run this command.\n ```error: {error}```"
             reaction = '🚫'
         elif isinstance(error, commands.UserInputError):
-            reply = f"User input error. Enter command arguments. \n ```error: {error}```"
+            response = f"User input error. Enter command arguments. \n ```error: {error}```"
             reaction = '❕'
         elif isinstance(error, commands.MissingRequiredArgument):
-            reply = f"Missing a required argument: {error.param}\n ```error: {error}```"
-            reaction = '❓'
+            response = f"Missing a required argument: {error.param}\n ```error: {error}```"
+            reaction = '🗣️'
         elif isinstance(error, commands.NotOwner):
-            #reply = f"Only the bot owner can use this command.\n ```error: {error}```"
+            response = f"{error}"
             reaction = '😳'
         else:
-            reply = f"Something went wrong trying to use this command.\n ```error: {error}```"
+          response = f"Something went very wrong.\n ```error: {error}```"
 
-        errorembed = discord.Embed(title=f"Command Error", description=reply, colour=Colour.red())
+        errorembed = discord.Embed(title=f"Command Error", description=f"{response}", colour=Colour.red())
+
         try:
           await ctx.message.add_reaction(reaction)
-          await ctx.reply(embed=errorembed)
+          await ctx.reply(embed=errorembed, delete_after=15)
         except:
           pass
 
@@ -68,7 +70,9 @@ class ErrorHandler(commands.Cog):
           server = "Direct Message"
         user = ctx.author
         command = ctx.command
-        print(f'{xtime}{Fore.RED} | ERRO: ({server}) {user} used {command} but failed with: {error}{Style.RESET_ALL}')
+        if command == None:
+          command = "a non-existant command"
+        print(f'{xtime}{Fore.RED} | ERRO: ({server}) {user} used {command} and failed with: {error}{Style.RESET_ALL}')
 
 def setup(bot: commands.Bot):
     bot.add_cog(ErrorHandler(bot))

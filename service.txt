@@ -1,6 +1,6 @@
 cogmgmt
 errorhandler
-cogs.basecmd
+basecmd
 cogs.extended
 cogs.fun
 cogs.cowsay

@@ -1,4 +1,5 @@
-import time, psutil, os, json
+import time, psutil, os
+from colorama import Fore, Style
 import discord
 from nextcord.ext import commands
 from dotenv import load_dotenv
@@ -18,7 +19,7 @@ class cogManagement(commands.Cog):
     @commands.is_owner()
     async def cog(self, ctx):
       if ctx.invoked_subcommand is None:
-        await ctx.reply('Invalid cog command passed')
+        list()
 
     @cog.command()
     async def list(self, ctx):
@@ -35,9 +36,11 @@ class cogManagement(commands.Cog):
       try:
         for cogs in split_text:
           self.bot.load_extension(cogs)
+          print(f"{Fore.YELLOW}loading {cogs}{Style.RESET_ALL}")
         await msg.edit(f"```{split_text}``` loaded.")
       except Exception as e:
         await msg.edit(f"Cog loading failed.\n```{e}```")
+        print(f"{Fore.RED}Failed loading {cogs} ({e}){Style.RESET_ALL}")
 
     @cog.command()
     async def unload(self, ctx, *, text: str):
@@ -46,9 +49,11 @@ class cogManagement(commands.Cog):
       try:
         for cogs in split_text:
           self.bot.unload_extension(cogs)
+          print(f"{Fore.YELLOW}unloading {cogs}{Style.RESET_ALL}")
         await msg.edit(f"```{split_text}``` unloaded.")
       except Exception as e:
         await msg.edit(f"Cog unloading failed.\n```{e}```")
+        print(f"{Fore.RED}Failed loading {cogs} ({e}){Style.RESET_ALL}")
       
     @cog.command()
     async def reload(self, ctx, *, text: str):
@@ -57,7 +62,8 @@ class cogManagement(commands.Cog):
       try:
         for cogs in split_text:
           self.bot.reload_extension(cogs)
-        await msg.edit(f"{split_text} reloaded.")
+          print(f"{Fore.YELLOW}reloading {cogs}{Style.RESET_ALL}")
+        await msg.edit(f"```{split_text}``` reloaded.")
       except Exception as e:
         await msg.edit(f"Cog unloading failed.\n```{e}```")
 

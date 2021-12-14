@@ -21,15 +21,19 @@ class Base(commands.Cog):
       self.bot.change_presence(activity=discord.Game(name="Shutting down..."))
       exit()
 
-    @commands.command(name="setstatus")
+    @commands.command(name="set")
     @commands.is_owner()  
-    async def set(self, ctx: commands.Context, *, text: str):
-      await ctx.reply("Set not a working command yet")
+    async def set(self, ctx):
+        await ctx.reply("Set not a working command yet")
 
     # Super basic commands
     @commands.command(name="hello")
     async def hello_world(self, ctx: commands.Context):
       await ctx.reply("Hello, world!")
+
+    @commands.command(name="botinfo")
+    async def botinfo(self, ctx: commands.Context):
+      await ctx.reply(f"Instance name: {_name_}\nVersion: {_version_}")
 
     @commands.command(name="invite", aliases=["bot"])
     async def invite(self, ctx: commands.Context):
@@ -59,10 +63,13 @@ class Base(commands.Cog):
       await ctx.reply(f"```Up since:\n{givetime}```")
 
     @commands.command(name="avatar", aliases=["pfp","a"])
-    async def avatar(self, ctx,):
-      member = ctx.author
-      userAvatarUrl = member.avatar_url
-      await ctx.reply(avatarUserUrl)
+    async def get_avatar(self, ctx, member: discord.Member = None):
+      if member == None:
+        member = ctx.author
+      memberAvatar = member.avatar.url
+      avaEmbed = discord.Embed(title = f"{member.name}'s Avatar")
+      avaEmbed.set_image(url = memberAvatar)
+      await ctx.reply(embed = avaEmbed)
 
 
 def setup(bot: commands.Bot):
