@@ -23,6 +23,7 @@ class ErrorHandler(commands.Cog):
       user = ctx.author
       command = ctx.command
       # Log the listening event in the terminal interface
+      #https://stackoverflow.com/questions/63324508/print-the-time-a-command-was-used-into-terminal-discord-py-rewrite
       print(f'{xtime}{Style.DIM} | INFO: ({server}) {user} used {command}{Style.RESET_ALL}')
 
 

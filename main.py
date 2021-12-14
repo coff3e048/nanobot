@@ -58,7 +58,6 @@ intents.members = True
 
 print(f"Starting {botname}")
 
-    #https://stackoverflow.com/questions/63324508/print-the-time-a-command-was-used-into-terminal-discord-py-rewrite
 
 bot = commands.Bot(
     command_prefix=prefix,
@@ -97,7 +96,6 @@ def cogservice():
     exit()
 
     
-
 @bot.event
 async def on_ready():
     #nanobot startup ascii art

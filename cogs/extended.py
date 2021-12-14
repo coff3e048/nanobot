@@ -41,5 +41,6 @@ class Extended(commands.Cog):
         else:
             await ctx.reply("Nothing found. Try again later.")
 
+
 def setup(bot: commands.Bot):
     bot.add_cog(Extended(bot))
