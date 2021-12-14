@@ -1,14 +1,18 @@
 import aiohttp
+import re
 from nextcord.ext import commands
 
 
-class YouTube(commands.Cog):
+class Extended(commands.Cog):
     """Search YouTube for videos."""
 
     def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession()
 
+#Website Queries
+
+#Youtube
     async def _youtube_results(self, query: str):
         try:
             headers = {"user-agent": "nanobot/3.0"}
@@ -28,7 +32,7 @@ class YouTube(commands.Cog):
 
         return url_list
 
-    @commands.command()
+    @commands.command(name="youtube", alias=["yt"])
     async def youtube(self, ctx, *, query: str):
         """Search on Youtube."""
         result = await self._youtube_results(query)
@@ -37,6 +41,5 @@ class YouTube(commands.Cog):
         else:
             await ctx.reply("Nothing found. Try again later.")
 
-
 def setup(bot: commands.Bot):
-    bot.add_cog(YouTube(bot))
+    bot.add_cog(Extended(bot))
