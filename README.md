@@ -21,7 +21,7 @@ SOURCEPAGE='https://github.com/pascal48/nanobot'
 Note that only TOKEN is really required, while the rest have built-in defaults.
 
 ### Dependencies
-python3 -m pip install -r requirements.txt
+`python3 -m pip install -r requirements.txt`
 
 requirements.txt contains a list of dependencies that are required to run nanobot, just run this and you'll be ok :)
 
