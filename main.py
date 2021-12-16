@@ -41,7 +41,7 @@ class env():
     # Github source page
     sourcepage = getenv('SOURCEPAGE')
     if sourcepage == None:
-        sourcepage == "https://github.com/pascal48/nanobot"
+        sourcepage = "https://github.com/pascal48/nanobot"
         console.warn(f"No sourcepage set, Defaulting to '{sourcepage}'")
 
     # Bot token ( https://discord.com/developers/docs )
@@ -61,15 +61,16 @@ class env():
 # (FULL isnt a thing yet)
 
     loglevel = getenv('LOGLEVEL')
-    if token == None:
+    if loglevel == None:
       loglevel = 'BASIC'
       console.warn(f"Logging level not set, defaulting to '{loglevel}'")
       
 
     status = getenv('BOTSTATUS')
     if status == None:
-        status == prefix
+        status = prefix
         console.warn(f"No custom status set. Defaulting to the prefix: {prefix}")
+
 
 
 intents = discord.Intents.default()

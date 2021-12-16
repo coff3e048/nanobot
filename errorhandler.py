@@ -21,6 +21,7 @@ class ErrorHandler(commands.Cog):
 #   - FILE : Logs whatever full has but into a file
 # (FULL isnt a thing yet)
 
+# Defaults for ANONYMOUS level
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError, response: str = None):
@@ -44,6 +45,7 @@ class ErrorHandler(commands.Cog):
         else:
             response = f"Something went very wrong.\n```{error}```"
 
+        
         if response == None:
             pass
         else:
@@ -59,7 +61,6 @@ class ErrorHandler(commands.Cog):
         console.error(f'({server}) {ctx.author} used {ctx.command} and failed with: {error}')
 
 
-    # If the command is ok...
     @commands.Cog.listener()
     async def on_command(self, ctx: commands.Context):
         try:

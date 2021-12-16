@@ -1,0 +1,45 @@
+
+    # Cosmetic name of the bot instance
+    botname = getenv('NAME')
+    if botname == None:
+        botname = "nanobot"
+        console.warn(f"No name set, Defaulting to '{botname}'")
+
+    # Bot prefix
+    prefix = getenv('PREFIX')
+    if prefix == None:
+        prefix = "!!"
+        console.warn(f"No prefix set, Defaulting to '{prefix}'")
+
+    # Github source page
+    sourcepage = getenv('SOURCEPAGE')
+    if sourcepage == None:
+        sourcepage = "https://github.com/pascal48/nanobot"
+        console.warn(f"No sourcepage set, Defaulting to '{sourcepage}'")
+
+    # Bot token ( https://discord.com/developers/docs )
+    token = getenv('TOKEN')
+    if token == None:
+        console.err(f"No token added, Exiting...")
+        exit()
+
+# There are 4 levels of logging. 
+# ANONYMOUS, MINIMAL, BASIC, FULL, and FULL-FILE
+# ----------------------------
+# ANONYMOUS: No message type (server, dm), no user, and no command
+# MINIMAL  : Logging server (excluding DM), but no user and only command
+# BASIC    : Logs server / DM, user, and commands but no strings and no files
+# FULL     : Logs all message types, users, commands + strings used, but not into a file.
+#   - FILE : Logs whatever full has but into a file
+# (FULL isnt a thing yet)
+
+    loglevel = getenv('LOGLEVEL')
+    if loglevel == None:
+      loglevel = 'BASIC'
+      console.warn(f"Logging level not set, defaulting to '{loglevel}'")
+      
+
+    status = getenv('BOTSTATUS')
+    if status == None:
+        status = prefix
+        console.warn(f"No custom status set. Defaulting to the prefix: {prefix}")
