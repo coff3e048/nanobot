@@ -30,25 +30,41 @@ class env():
     botname = getenv('NAME')
     if botname == None:
         botname = "nanobot"
-        console.warn(f"No name set. Defaulting to '{botname}'")
+        console.warn(f"No name set, Defaulting to '{botname}'")
 
     # Bot prefix
     prefix = getenv('PREFIX')
     if prefix == None:
         prefix = "!!"
-        console.warn(f"No prefix set. Defaulting to '{prefix}'")
+        console.warn(f"No prefix set, Defaulting to '{prefix}'")
 
     # Github source page
     sourcepage = getenv('SOURCEPAGE')
     if sourcepage == None:
         sourcepage == "https://github.com/pascal48/nanobot"
-        console.warn(f"No sourcepage set. Defaulting to '{sourcepage}'")
+        console.warn(f"No sourcepage set, Defaulting to '{sourcepage}'")
 
     # Bot token ( https://discord.com/developers/docs )
     token = getenv('TOKEN')
     if token == None:
-        console.err(f"No token added. Exiting...")
+        console.err(f"No token added, Exiting...")
         exit()
+
+# There are 4 levels of logging. 
+# ANONYMOUS, MINIMAL, BASIC, FULL, and FULL-FILE
+# ----------------------------
+# ANONYMOUS: No message type (server, dm), no user, and no command
+# MINIMAL  : Logging server (excluding DM), but no user and only command
+# BASIC    : Logs server / DM, user, and commands but no strings and no files
+# FULL     : Logs all message types, users, commands + strings used, but not into a file.
+#   - FILE : Logs whatever full has but into a file
+# (FULL isnt a thing yet)
+
+    loglevel = getenv('LOGLEVEL')
+    if token == None:
+      loglevel = 'BASIC'
+      console.warn(f"Logging level not set, defaulting to '{loglevel}'")
+      
 
     status = getenv('BOTSTATUS')
     if status == None:
@@ -74,6 +90,7 @@ bot = commands.Bot(
 )
 
 
+
 class botinfo():
   
     author = "coff3e"
@@ -84,7 +101,7 @@ class botinfo():
 
 def cogservice():
     if os.path.exists("service.txt"):
-        console.botinfo(f"Found service.txt")
+        console.botinfo("Found service.txt")
         fs = "service.txt"
         service = open(fs, 'r')
         cog_file = service.read()
@@ -143,18 +160,5 @@ async def on_ready():
     except Exception as e:
         console.error(f"Setting bot status failed.\n{e}")
 
-connected = False
 # Loading TOKEN from .env
-try:
-    bot.run(env.token)
-except Exception as e:
-# a litte spaghetti, but it works i guess?
-  while reconnected == False:
-    console.error(e)
-    sec = 120
-    console.botinfo(f"Waiting {int(sec)} seconds before attempting reconnection...")
-    re = time.sleep(sec)
-    bot.run(env.token)
-
-
-
+bot.run(env.token)

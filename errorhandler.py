@@ -3,7 +3,7 @@ import discord
 from console import console
 from discord import Colour
 from nextcord.ext import commands
-
+#from main import env
 
 class ErrorHandler(commands.Cog):
     """A cog for global error handling."""
@@ -11,13 +11,15 @@ class ErrorHandler(commands.Cog):
       self.bot = bot
 
 
-    @commands.Cog.listener()
-    async def on_command(self, ctx: commands.Context):
-        try:
-            server = ctx.guild.name
-        except:
-            server = "Direct Message"
-        console.log(f'({server}) {ctx.author} used {ctx.command}')
+# There are 4 levels of logging. 
+# ANONYMOUS, MINIMAL, BASIC, FULL, and FULL-FILE
+# ----------------------------
+# ANONYMOUS: No message type (server, dm), no user, and no command
+# MINIMAL  : Logging server (excluding DM), but no user and only command
+# BASIC    : Logs server / DM, user, and commands but no strings and no files
+# FULL     : Logs all message types, users, commands + strings used, but not into a file.
+#   - FILE : Logs whatever full has but into a file
+# (FULL isnt a thing yet)
 
 
     @commands.Cog.listener()
@@ -42,7 +44,6 @@ class ErrorHandler(commands.Cog):
         else:
             response = f"Something went very wrong.\n```{error}```"
 
-        
         if response == None:
             pass
         else:
@@ -56,6 +57,16 @@ class ErrorHandler(commands.Cog):
         except:
             server = "Direct Message"
         console.error(f'({server}) {ctx.author} used {ctx.command} and failed with: {error}')
+
+
+    # If the command is ok...
+    @commands.Cog.listener()
+    async def on_command(self, ctx: commands.Context):
+        try:
+            server = ctx.guild.name
+        except:
+            server = "Direct Message"
+        console.log(f'({server}) {ctx.author} used {ctx.command}')
 
 
 

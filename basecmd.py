@@ -17,7 +17,7 @@ class Base(commands.Cog):
     @commands.is_owner()
     async def shutdown(self, ctx: commands.Context):
         await ctx.reply("Exiting...")
-        self.bot.change_presence(activity=discord.Game(name="Shutting down..."))
+        await self.bot.change_presence(activity=discord.Game(name="Shutting down..."))
         exit()
 
     @commands.command(name="set")
@@ -39,11 +39,15 @@ class Base(commands.Cog):
 
 
     @commands.command(name="source", aliases=["license"])
-    async def license(self, ctx: commands.Context):
+    async def license(self, ctx: commands.Context, dm: str = None):
         gitpage = getenv('SOURCEPAGE')
         if gitpage == None:
             gitpage = "https://github.com/pascal48/nanobot"
-        await ctx.reply(f"nanobot is released under the GNU General Public License (GPL v3), making it fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <{gitpage}>")
+        response = f"nanobot is released under the GNU General Public License (GPL v3), making it fully open source. Contributions are welcome to bring it up to it's full functionality like its redbot predecesor \n\ngithub: <{gitpage}>"
+        if dm == None:
+          await ctx.author.send(response)
+        else:
+          await ctx.reply(response)
 
 
     @commands.command(name="ping")
@@ -61,17 +65,6 @@ class Base(commands.Cog):
         p = psutil.Process(os.getpid())
         givetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(p.create_time()))
         await ctx.reply(f"```Up since:\n{givetime}```")
-
-
-    @commands.command(name="avatar", aliases=["pfp","a"])
-    async def get_avatar(self, ctx, member: discord.Member = None):
-        if member == None:
-            member = ctx.author
-        memberAvatar = member.avatar.url
-        avaEmbed = discord.Embed(title = f"{member.name}'s Avatar")
-        avaEmbed.set_image(url = memberAvatar)
-        await ctx.reply(embed = avaEmbed)
-
 
 
 def setup(bot: commands.Bot):

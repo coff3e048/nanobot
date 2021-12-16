@@ -13,9 +13,7 @@ class botManagement(commands.Cog):
         if ctx.invoked_subcommand is None:
             await ctx.reply("No invoked subcommand")
 
-    @botmgr.group()
-    async def dump(sef, ctx, file: str = None):
-      
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(botManagement(bot))

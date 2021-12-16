@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 from os import getenv
 load_dotenv()
 
-  #https://www.geeksforgeeks.org/os-module-python-examples/
-  #https://www.w3schools.com/python/python_file_open.asp
 
 class cogManagement(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -36,6 +34,7 @@ class cogManagement(commands.Cog):
             list.close()
         except Exception as e:
             await ctx.reply(f"{e}")
+
 
     @cog.command()
     async def load(self, ctx, *, text: str):
@@ -68,10 +67,10 @@ class cogManagement(commands.Cog):
       split_text = text.split()
       msg = await ctx.reply(f"Attempting to reload cog(s): ```{split_text}```")
       try:
-        for cogs in split_text:
-          self.bot.reload_extension(cogs)
-          console.botinfo(f"reloading {cogs}")
-          await msg.edit(f"```{split_text}``` reloaded.")
+          for cogs in split_text:
+              self.bot.reload_extension(cogs)
+              console.botinfo(f"reloading {cogs}")
+              await msg.edit(f"```{split_text}``` reloaded.")
       except Exception as e:
         await msg.edit(f"Cog reloading failed.\n```{e}```")
         console.error(f"Failed reloading {cogs} ({e})")
