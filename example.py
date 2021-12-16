@@ -9,7 +9,6 @@ load_dotenv()
 
 class Base(commands.Cog):
     """A couple of simple commands."""
-    
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 

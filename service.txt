@@ -4,3 +4,4 @@ errorhandler
 basecmd
 cogs.extended
 cogs.fun
+cogs.snipe
