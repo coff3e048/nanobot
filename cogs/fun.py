@@ -56,15 +56,12 @@ class Fun(commands.Cog):
       else:
         await ctx.reply(f"```{textart}```")
         
-
         
     @commands.command(name="insult")
     async def insult(self, ctx, member: discord.Member = None):
-      #insults = insult_list.list
+      insults = insult_list.list
       if member == None:
         await ctx.reply(f"{ctx.author.mention} {random.choice(insults)}")
-      elif member == self.bot.user.id:
-        await ctx.reply(f"{ctx.author.mention} I'm not stupid, why would I insult myself?")
       else:
         await ctx.reply(f"{member.mention} {random.choice(insults)}")
           

@@ -45,9 +45,16 @@ class ErrorHandler(commands.Cog):
             response = f"Something went very wrong.\n```{error}```"
             reaction = '🔥'
 
-
+        
+        if response == None:
+            pass
+        else:
             errorembed = discord.Embed(title=f"Command Error", description=response, colour=Colour.red())
             await ctx.reply(embed=errorembed, delete_after=15)
+        
+        if reaction == None:
+            pass
+        else:
             await ctx.message.add_reaction(reaction)
 
         # Log the error in the terminal interface

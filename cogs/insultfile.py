@@ -19,9 +19,9 @@ class insult_list():
         "so down bad you give discord money every month",
         "if furries want to be animals then my hunting license is valid",
         "get off reddit",
-        "eat dick",
+        "eat my big dick",
         "faggot",
-        "you will never be a woman",
+        "you'll never accomplish anything great, kill yourself",
         "tranny",
         "you will wake up with furries in your bed tomorrow morning"
     ]
