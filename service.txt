@@ -1,6 +1,6 @@
-cogmgmt
+botmgr
+pkgmgr
 errorhandler
 basecmd
 cogs.extended
 cogs.fun
-cogs.cowsay

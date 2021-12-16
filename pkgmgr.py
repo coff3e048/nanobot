@@ -1,7 +1,7 @@
 import time, psutil, os
-from colorama import Fore, Style
 import discord
 from nextcord.ext import commands
+from console import console
 from dotenv import load_dotenv
 
 from os import getenv
@@ -22,12 +22,27 @@ class cogManagement(commands.Cog):
         list()
 
     @cog.command()
+    async def dump(self, ctx, *, cog: str):
+      try:
+        cogfile = open(cog, 'r')
+        readfile = cogfile.read()
+        f = open("message.txt", "x")
+        f.write(cogfile.read())
+        cogfile.close()
+        await ctx.reply(file=discord.File(r'message.txt'))
+        f.close()
+        f.remove()
+      except Exception as e:
+        await ctx.reply(f"{e}")
+        cogfile.close()
+        f.close()
+    
+    @cog.command()
     async def list(self, ctx):
       fs = "service.txt"
-      service = open(fs, 'r')
-      text = service.read()
-      await ctx.reply(f"```{text}```")
-      service.close()
+      list = open(fs, 'r')
+      await ctx.reply(f"```{list.read()}```")
+      list.close()
 
     @cog.command()
     async def load(self, ctx, *, text: str):
@@ -36,11 +51,11 @@ class cogManagement(commands.Cog):
       try:
         for cogs in split_text:
           self.bot.load_extension(cogs)
-          print(f"{Fore.YELLOW}loading {cogs}{Style.RESET_ALL}")
+          console.botinfo(f"loading {cogs}")
         await msg.edit(f"```{split_text}``` loaded.")
       except Exception as e:
         await msg.edit(f"Cog loading failed.\n```{e}```")
-        print(f"{Fore.RED}Failed loading {cogs} ({e}){Style.RESET_ALL}")
+        console.error(f"Failed loading {cogs} ({e})")
 
     @cog.command()
     async def unload(self, ctx, *, text: str):
@@ -49,11 +64,11 @@ class cogManagement(commands.Cog):
       try:
         for cogs in split_text:
           self.bot.unload_extension(cogs)
-          print(f"{Fore.YELLOW}unloading {cogs}{Style.RESET_ALL}")
+          console.botinfo(f"unloading {cogs}")
         await msg.edit(f"```{split_text}``` unloaded.")
       except Exception as e:
         await msg.edit(f"Cog unloading failed.\n```{e}```")
-        print(f"{Fore.RED}Failed loading {cogs} ({e}){Style.RESET_ALL}")
+        print(f"Failed loading {cogs} ({e})")
       
     @cog.command()
     async def reload(self, ctx, *, text: str):
@@ -62,7 +77,7 @@ class cogManagement(commands.Cog):
       try:
         for cogs in split_text:
           self.bot.reload_extension(cogs)
-          print(f"{Fore.YELLOW}reloading {cogs}{Style.RESET_ALL}")
+          console.botinfo(f"reloading {cogs}")
         await msg.edit(f"```{split_text}``` reloaded.")
       except Exception as e:
         await msg.edit(f"Cog unloading failed.\n```{e}```")

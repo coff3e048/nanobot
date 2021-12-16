@@ -1,4 +1,4 @@
-import aiohttp
+import aiohttp, cowsay, typing
 import re
 from nextcord.ext import commands
 
@@ -41,6 +41,14 @@ class Extended(commands.Cog):
         else:
             await ctx.reply("Nothing found. Try again later.")
 
+    
+    @commands.group(name="say")
+    async def say(self, ctx: commands.Context, saytype: str = "cow", *, text: str = "Hello world!"):
+        try:
+            await ctx.reply(f"```{cowsay.get_output_string(saytype,text)}```")
+        except Exception as e:
+            await ctx.reply(f"```{e}```")
+      
 
 def setup(bot: commands.Bot):
     bot.add_cog(Extended(bot))
