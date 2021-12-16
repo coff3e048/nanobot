@@ -21,10 +21,10 @@ class ErrorHandler(commands.Cog):
 #   - FILE : Logs whatever full has but into a file
 # (FULL isnt a thing yet)
 
-# Defaults for ANONYMOUS level
+
 
     @commands.Cog.listener()
-    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError, response: str = None):
+    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError, response: str = None, reaction: str = None):
         """A global error handler cog."""
         if isinstance(error, commands.CommandNotFound):
             reaction = '❓'
@@ -40,18 +40,15 @@ class ErrorHandler(commands.Cog):
             response = f"Missing a required argument: {error.param}\n```{error}```"
             reaction = '🗣️'
         elif isinstance(error, commands.NotOwner):
-            response = None
             reaction = '😳'
         else:
             response = f"Something went very wrong.\n```{error}```"
+            reaction = '🔥'
 
-        
-        if response == None:
-            pass
-        else:
+
             errorembed = discord.Embed(title=f"Command Error", description=response, colour=Colour.red())
             await ctx.reply(embed=errorembed, delete_after=15)
-        await ctx.message.add_reaction(reaction)
+            await ctx.message.add_reaction(reaction)
 
         # Log the error in the terminal interface
         try:

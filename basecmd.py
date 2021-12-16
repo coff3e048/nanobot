@@ -55,9 +55,9 @@ class Base(commands.Cog):
     async def ping(self, ctx: commands.Context):
         """Get the bot's current websocket & API latency."""
         start_time = time.time()
-        message = await ctx.send("pinging")
+        message = await ctx.send("pinging your mom")
         end_time = time.time()
-        await message.edit(f"```Pong!: {round(self.bot.latency * 1000)}ms\nAPI: {round((end_time - start_time) * 1000)}ms```")
+        await message.edit(f"pong! *({round(self.bot.latency * 1000)}ms)*\nAPI *({round((end_time - start_time) * 1000)}ms)*")
 
 
     @commands.command(name="uptime", alises=["up"])
