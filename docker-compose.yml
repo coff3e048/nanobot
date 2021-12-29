@@ -1,0 +1,14 @@
+version: '3.0'
+
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nanobot
+    restart: unless-stopped
+    volumes:
+      -  /nanobot:./
+    env_file:
+      - .env
+#   environment:
