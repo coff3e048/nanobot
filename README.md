@@ -11,10 +11,10 @@ Running the bot is as simple as python main.py, but requires secret environment 
 Heres an example:
 
 ```
-TOKEN='bunchoflettersandwhatnot
+TOKEN='bunchoflettersandwhatnot'
 PREFIX='!!'
 # Bot invite
-INVITE='https://discord.com/oauth2/***
+INVITE='https://discord.com/oauth2/***'
 # Source code page
 SOURCEPAGE='https://github.com/pascal48/nanobot'
 ```

@@ -1,4 +1,5 @@
-import aiohttp, cowsay, typing
+import aiohttp
+import cowsay
 import re
 import discord
 from nextcord.ext import commands
@@ -44,14 +45,12 @@ class Extended(commands.Cog):
         else:
             await ctx.reply("Nothing found. Try again later.")
 
-    
     @commands.group(name="say")
     async def say(self, ctx: commands.Context, saytype: str = "cow", *, text: str = "Hello world!"):
         try:
             await ctx.reply(f"```{cowsay.get_output_string(saytype,text)}```")
         except Exception as e:
             await ctx.reply(f"```{e}```")
-
 
     @commands.command(name="snipe")
     async def snipe(self, ctx: commands.Context):
@@ -63,20 +62,22 @@ class Extended(commands.Cog):
         author = self.last_msg.author
         content = self.last_msg.content
 
-        embed = discord.Embed(title=f"Message from {author}", description=content)
+        embed = discord.Embed(
+            title=f"Message from {author}", description=content)
         await ctx.send(embed=embed)
 
-
-    @commands.command(name="avatar", aliases=["pfp","a"])
+    @commands.command(name="avatar", aliases=["pfp", "a"])
     async def get_avatar(self, ctx, member: discord.Member = None):
         if member == None:
             member = ctx.author
         memberAvatar = member.avatar.url
-        avaEmbed = discord.Embed(title = f"{member.name}'s Avatar")
-        avaEmbed.set_image(url = memberAvatar)
-        await ctx.reply(embed = avaEmbed)
+        avatarEmbed = discord.Embed(title=f"{member.name}'s Avatar")
+        avatarEmbed.set_image(url=memberAvatar)
+        try:
+            await ctx.reply(embed=avatarEmbed)
+        except:
+            await ctx.author.send(embed=avatarEmbed)
 
-      
 
 def setup(bot: commands.Bot):
     bot.add_cog(Extended(bot))

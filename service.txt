@@ -1,6 +1,0 @@
-botmgr
-pkgmgr
-errorhandler
-basecmd
-cogs.extended
-cogs.fun

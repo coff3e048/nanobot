@@ -1,2 +1,2 @@
 language = "bash"
-run = "bash main.sh"
+run = "pip install -r requirements.txt && python3 ignition.py"
