@@ -8,7 +8,7 @@ services:
     image: nanobot
     restart: unless-stopped
     volumes:
-      -  /nanobot:/path/to/nanobot/data
+      -  /nanobot:./
     env_file:
       - .env
 #   environment:

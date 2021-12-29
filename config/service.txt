@@ -1,7 +1,0 @@
-botmgr
-pkgmgr
-errorhandler
-basecmd
-cogs.extended
-cogs.fun
-testing.av.ytdl

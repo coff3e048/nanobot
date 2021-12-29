@@ -51,8 +51,8 @@ class Base(commands.Cog):
     async def ping(self, ctx: commands.Context):
         """Get the bot's current websocket & API latency."""
         start_time = time.time()
-        listof_shit = ['your mom', 'fuck you', 'my balls', 'you']
-        msg = await ctx.send(f"`pinging {random.choice(listof_shit)}`")
+        listof_responses = ['your mom', 'my balls', 'deez nuts', 'aaaaaaaaa']
+        msg = await ctx.send(f"`pinging {random.choice(listof_responses)}`")
         end_time = time.time()
         await msg.edit(embed=discord.Embed(
             title="pong!",
