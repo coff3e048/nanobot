@@ -25,8 +25,8 @@ Note that only TOKEN is really required, while the rest have built-in defaults.
 
 requirements.txt contains a list of dependencies that are required to run nanobot, just run this and you'll be ok :)
 
-Goals
 
+### Feature Goals
 - Create moderation commands (ban, mute, etc.)
 - Create guild-specific data (custom prefix, RSS, etc)
 - More "fun" commands
