@@ -1,7 +1,6 @@
 nextcord
 psutil 
 python-dotenv 
-colorama 
 art 
 cowsay
 rich
