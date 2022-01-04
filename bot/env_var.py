@@ -1,10 +1,16 @@
+import json
 from console import console, print
 from os import getenv
 
-class env():
+class loaded():
+    cogs = []
 
+class unloaded():
+    cogs = []
+
+class env():
     # Cosmetic name of the bot instance
-    botname = getenv('NAME', 'nanobot')
+    botname = getenv('BOTNAME', "nanobot")
 
     # Bot prefix
     prefix = getenv('PREFIX', '!!')
@@ -29,5 +35,9 @@ class env():
 
     # Default Discord status.
     status = getenv('BOTSTATUS', prefix)
-    #if status == None:
-        #status = prefix
+
+    # Bot version
+    _versionjson = json.load(
+        open('bot/version.json')
+    )
+    version = _versionjson['botversion']

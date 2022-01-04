@@ -5,10 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: nanobot
     image: nanobot
     restart: unless-stopped
     volumes:
-      -  /nanobot:./
+      -  $PWD:/nanobot
     env_file:
       - .env
 #   environment:

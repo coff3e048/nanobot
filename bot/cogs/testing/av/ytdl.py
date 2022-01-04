@@ -19,15 +19,16 @@ class ytdlcmd(commands.Cog):
 
     # Example video(s): http://www.youtube.com/watch?v=BaW_jenozKc
     #                   http://www.youtube.com/watch?v=jNQXAC9IVRw
+    #                   https://www.youtube.com/watch?v=ywgeloPNmxk
     #                   https://youtu.be/khK_afMwAdA
-    #
+    #                   
     # Btw, this script is incredibly garbage and doesn't work very well. When a user tries to use [p]ytdl, the whole bot will stop and wait until the download / upload is finished.
     
       with yt_dlp.YoutubeDL() as ydl:
           info_dict = ydl.extract_info(query, download=False)
           video_id = info_dict.get("id", None)
               
-      ytdlpath = "'.www/temp/%(id)s.%(ext)s'"
+      ytdlpath = "'.temp/%(id)s.%(ext)s'"
       usage = "[p]ytdl 'https://youtube.com/...'' video / audio (default: video)" 
       
       if query == None:
@@ -50,7 +51,7 @@ class ytdlcmd(commands.Cog):
 
 	# And here lies the major problem. 
           try:
-              child = subprocess.Popen(f"yt-dlp {opts} {query}", shell=True)
+              child = subprocess.Popen(f"./bin/yt-dlp {opts} {query}", shell=True)
               exitCode = child.communicate()[0]
               rc = child.returncode
           except Exception as e:
@@ -58,7 +59,7 @@ class ytdlcmd(commands.Cog):
               
           if rc == 0:
               try:
-                  await ctx.reply(file=discord.File(f".www/temp/{vidfile}"))
+                  await ctx.reply(file=discord.File(f".temp/{vidfile}"))
               except:
                   await ctx.reply(f"<{query}> is too big to upload to Discord. If it's not here, it's probably too big for us too. \n\nhttp://{webdomain}/temp/{vidfile}")
                   

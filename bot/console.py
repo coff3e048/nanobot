@@ -19,6 +19,8 @@ class console():
             text = f'{fxtime} [bold underline yellow]WARN: {text}[/]'
         elif logtype == 'error':
             text = f'{fxtime} [bold underline red]ERRO: {text}[/]'
+        elif logtype == 'std':
+            pass
         print(text)
 
     def nanostyle(text):
@@ -35,3 +37,6 @@ class console():
 
     def error(text):
         console._print('error',text)
+
+    def print(text):
+        console._print('std',text)

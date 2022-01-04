@@ -1,0 +1,50 @@
+                
+    @cog.command()
+    async def list(self, ctx):
+        try:
+            fs = "service.txt"
+            list = open(fs, 'r')
+            await ctx.reply(f"```{list.read()}```")
+            list.close()
+        except Exception as e:
+            await ctx.reply(f"{e}")
+
+    @cog.command()
+    async def load(self, ctx, *, text: str):
+        split_text = text.split()
+        msg = await ctx.reply(f"Attempting to load cog(s): ```{split_text}```")
+        try:
+            for cogs in split_text:
+                bot.load_extension(cogs)
+                console.botlog(f"loading {cogs}")
+                await msg.edit(f"```{split_text}``` loaded.")
+        except Exception as e:
+            await msg.edit(f"Cog loading failed.\n```{e}```")
+            console.error(f"Failed loading {cogs} ({e})")
+
+    @cog.command()
+    async def unload(self, ctx, *, text: str):
+        split_text = text.split()
+        msg = await ctx.reply(f"Attempting to unload cog(s): ```{split_text}```")
+        try:
+            for cogs in split_text:
+                bot.unload_extension(cogs)
+                console.botlog(f"unloading {cogs}")
+                await msg.edit(f"```{split_text}``` unloaded.")
+        except Exception as e:
+            await msg.edit(f"Cog unloading failed.\n```{e}```")
+            console.error(f"Failed loading {cogs} ({e})")
+
+    @cog.command()
+    async def reload(self, ctx, *, text: str):
+        split_text = text.split()
+        msg = await ctx.reply(f"Attempting to reload cog(s): ```{split_text}```")
+        try:
+            for cogs in split_text:
+                bot.reload_extension(cogs)
+                console.botlog(f"reloading {cogs}")
+                await msg.edit(f"```{split_text}``` reloaded. ")
+        except Exception as e:
+            await msg.edit(f"Cog reloading failed.\n```{e}```")
+            console.error(f"Failed reloading {cogs} ({e})")
+

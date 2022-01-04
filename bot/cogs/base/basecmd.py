@@ -29,22 +29,22 @@ class Base(commands.Cog):
         await ctx.author.send(f"Please note. This bot is in its very early stages of development. There will be bugs and possibly vulnerabilities.\n\nUse at your own risk\n{inviteurl}")
 
     @commands.command(name="source", aliases=["license"])
-    async def license(self, ctx: commands.Context, dm: str = None):
+    async def license(self, ctx: commands.Context, dm: str = True):
         """Bot license and source code page"""
         embed = discord.Embed(
             title=f"nanobot",
             url=f"https://github.com/pascal48/nanobot",
-            description=f"nanobot is a small project of mine to practice Python as well as build a unique working Discord bot.\n\nI'm a beginner at Python, so contributions are 100% welcome!\n*(use the link in the title)*",
+            description=f"nanobot is a small project of mine to practice Python as well as build a unique working Discord bot.\n\nI'm an amateur at Python, so contributions are 100% welcome!\n*(use the link in the title)*",
             colour=discord.Colour.purple()
         ).set_thumbnail(
             url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-download.com%2Fwp-content%2Fuploads%2F2016%2F10%2FPython_logo_icon.png&f=1&nofb=1"
         ).set_footer(
             text="nanobot's source code is proudly licensed under the GNU Affero General Public License (AGPL v3)!"
         )
-        if dm != None:
-            await ctx.reply(embed=embed)
-        else:
+        if dm:
             await ctx.author.send(embed=embed)
+        else:
+            await ctx.reply(embed=embed)
 
     @commands.command(name="ping")
     @commands.cooldown(1, 3, commands.BucketType.guild)

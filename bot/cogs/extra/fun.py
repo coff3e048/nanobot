@@ -26,8 +26,16 @@ class Fun(commands.Cog):
 
     @commands.command(name="8ball")
     async def eightball(self, ctx: commands.Context):
-        responses = ["It is certain", "Outlook good", "You may rely on it", "Ask again later",
-                     "Concentrate and ask again", "Reply hazy, try again", "My reply is no", "My sources say no"]
+        responses = [
+            "It is certain",
+            "Outlook good", 
+            "You may rely on it", 
+            "Ask again later", 
+            "Concentrate and ask again", 
+            "Reply hazy, try again", 
+            "My reply is no", 
+            "My sources say no"
+            ]
         msg = await ctx.reply(':8ball: *Thinking...*')
         await asyncio.sleep(1)
         await msg.edit(f':8ball: {random.choice(responses)}')

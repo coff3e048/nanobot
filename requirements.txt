@@ -5,3 +5,4 @@ art
 cowsay
 rich
 yt-dlp
+aiohttp[speedups]
