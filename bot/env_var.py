@@ -1,10 +1,32 @@
-from console import console, print
+import json
+import logging
+from console import console
 from os import getenv
 
-class env():
+# Valid environment variables:
+# 
+# NEXTCORDLOG
+# BOTNAME
+# PREFIX
+# SOURCEPAGE
+# USERID
+# TOKEN (required)
+# LOGLEVEL
+# BOTSTATUS
+# BOTVERSION
+# DOCKER
 
+class env():
     # Cosmetic name of the bot instance
-    botname = getenv('NAME', 'nanobot')
+    nextcordlog = getenv('NEXTCORDLOG', False)
+    if nextcordlog:
+        logger = logging.getLogger('nextcord')
+        logger.setLevel(logging.DEBUG)
+        handler = logging.FileHandler(filename='log/nextcord.log', encoding='utf-8', mode='w')
+        handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+        logger.addHandler(handler)
+
+    botname = getenv('BOTNAME', "nanobot")
 
     # Bot prefix
     prefix = getenv('PREFIX', '!!')
@@ -16,7 +38,7 @@ class env():
     userid = getenv('BOTID')
 
     # Default bot invite (could be another link)
-    botinvite = getenv('INVITE', f"https://discord.com/oauth2/{userid}&scope=bot")
+    #botinvite = getenv('INVITE', f"https://discord.com/oauth2/{bot.userid}&scope=bot")
 
     # Setting bot token
     token = getenv('TOKEN')
@@ -29,5 +51,11 @@ class env():
 
     # Default Discord status.
     status = getenv('BOTSTATUS', prefix)
-    #if status == None:
-        #status = prefix
+
+    # Bot version
+    _versionjson = json.load(
+        open('bot/version.json')
+    )
+    version = _versionjson['botversion']
+
+    docker = getenv('DOCKER', False)

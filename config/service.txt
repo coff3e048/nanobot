@@ -1,0 +1,8 @@
+help
+cogs.base.basecmd
+cogs.base.botmgr
+cogs.base.pkgmgr
+cogs.base.errorhandler
+cogs.extra.fun
+cogs.extra.extended
+cogs.testing.av.ytdl

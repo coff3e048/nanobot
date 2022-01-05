@@ -15,6 +15,8 @@ class console():
             text = f'{fxtime} [dim]INFO: {text}[/]'
         elif logtype == 'botlog':
             text = f'{fxtime} [blue]BOT-INFO: {text}[/]'
+        elif logtype == 'system':
+            text=f'{fxtime} {text}'
         elif logtype == 'warn':
             text = f'{fxtime} [bold underline yellow]WARN: {text}[/]'
         elif logtype == 'error':
@@ -29,6 +31,9 @@ class console():
 
     def botlog(text):
         console._print('botlog',text)
+
+    def system(text):
+        console._print('system',text)
 
     def warn(text):
         console._print('warn',text)
