@@ -1,4 +1,3 @@
-help
 cogs.base.basecmd
 cogs.base.botmgr
 cogs.base.pkgmgr

@@ -1,19 +1,20 @@
 import time
 # Log the amount of time it takes to start the bot
 start_time = time.time()
-import asyncio, aiohttp
-import psutil
-import platform
-import os
-import sys
-import logging
-import json
-import discord
-from rich import print
-from console import console
-from nextcord.ext import commands
-from env_var import env
+import aiohttp
+import asyncio
 from art import text2art
+from env_var import env
+from nextcord.ext import commands
+from console import console
+from rich import print
+import discord
+import json
+import logging
+import sys
+import os
+import platform
+import psutil
 
 
 osinfo = platform.system()
@@ -64,7 +65,8 @@ def cogservice(filepath):
 
                 bot.load_extension(cogs)
                 cog_end_time = time.time()
-                console.botlog(f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
+                console.botlog(
+                    f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
             except Exception as e:
                 console.error(f"loading {cogs} failed:\n({e})")
     else:
@@ -74,16 +76,18 @@ def cogservice(filepath):
                 cog_start_time = time.time()
                 bot.load_extension(cogs)
                 cog_end_time = time.time()
-                console.botlog(f"loading {cogs.replace('.','/')} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
+                console.botlog(
+                    f"loading {cogs.replace('.','/')} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
             except Exception as e:
                 console.error(f"loading {cogs.replace('.','/')} failed ({e})")
 
+
 @bot.event
 async def on_ready():
-# nanobot startup ascii art
+    # nanobot startup ascii art
     console.nanostyle(
-      text2art(botinfo.name,'random')
-      )
+        text2art(botinfo.name, 'random')
+    )
     if "DEV" in botinfo.version:
         print(f"[red]\n{botinfo.version}[/]")
         print(f"[bold red]! ! !   DEV VERSION   ! ! ![/]\n")
@@ -101,7 +105,7 @@ async def on_ready():
     #console.botlog(f"Joined guilds:")
     for guilds in bot.guilds:
         try:
-            #console.print(f'{[guilds]}')
+            # console.print(f'{[guilds]}')
             pass
         except Exception as e:
             console.error(e)
@@ -117,16 +121,16 @@ async def on_ready():
 # set the bot status and then screw off
     try:
         await bot.change_presence(
-                                  activity=discord.Game(
-                                  name=env.status)
-                                )
+            activity=discord.Game(
+                name=env.status)
+        )
         console.botlog(f"Set bot status as '[white]{env.status}[/]'")
     except Exception as e:
         console.error(f"Setting bot status failed.\n{e}")
 
 
 # Loading TOKEN from .env
-try: 
+try:
     bot.run(env.token)
 except Exception as e:
     console.error(e)

@@ -10,13 +10,6 @@ class ErrorHandler(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    async def whatserver():
-        try:
-            server = ctx.guild.name
-        except:
-            server = "Direct Message"
-        return server
-
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError, response: str = None, reaction: str = None):
         """A global error handler cog."""

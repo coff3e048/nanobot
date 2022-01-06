@@ -7,8 +7,7 @@ import asyncio
 from nextcord.ext import commands
 from dotenv import load_dotenv
 from os import getenv
-load_dotenv()
-
+from env_var import env
 
 class Base(commands.Cog):
     """A couple of simple commands."""
@@ -25,7 +24,6 @@ class Base(commands.Cog):
     @commands.command(name="invite")
     async def invite(self, ctx: commands.Context):
         """Invite the bot to your server!"""
-        inviteurl = getenv('INVITE')
         await ctx.author.send(f"Please note. This bot is in its very early stages of development. There will be bugs and possibly vulnerabilities.\n\nUse at your own risk\n{inviteurl}")
 
     @commands.command(name="source", aliases=["license"])

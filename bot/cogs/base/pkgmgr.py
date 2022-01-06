@@ -4,6 +4,7 @@ import discord
 from nextcord.ext import commands
 from console import console
 
+
 class cogManagement(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -14,7 +15,8 @@ class cogManagement(commands.Cog):
         subcommands = ['list', 'load', 'unload', 'reload']
         if subcommand in subcommands:
             if subcommand == 'list':
-                coglist = str(self.bot.cogs).replace('[','').replace(']','').replace("'","").replace(",","\n").replace(" ","")
+                coglist = str(self.bot.cogs).replace('[', '').replace(']', '').replace(
+                    "'", "").replace(",", "\n").replace(" ", "")
                 try:
                     await ctx.reply(f"```{coglist}```")
                 except Exception as e:
@@ -39,7 +41,6 @@ class cogManagement(commands.Cog):
                     console.error(f"Failed loading {cogs} ({e})")
         else:
             await ctx.reply(f"`{subcommand}`is not a valid subcommand.")
-
 
 
 def setup(bot: commands.Bot):

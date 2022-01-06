@@ -9,7 +9,8 @@ services:
     image: nanobot
     restart: unless-stopped
     volumes:
-      -  $PWD:/nanobot
+      - ./:/nanobot:Z
     env_file:
       - .env
+
 #   environment:
