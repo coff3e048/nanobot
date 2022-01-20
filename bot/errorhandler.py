@@ -60,5 +60,6 @@ class ErrorHandler(commands.Cog):
     async def on_guild_remove(self, ctx: commands.Context):
         console.botlog(f'Left guild {server}')
 
+
 def setup(bot: commands.Bot):
     bot.add_cog(ErrorHandler(bot))

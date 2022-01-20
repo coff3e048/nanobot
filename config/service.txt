@@ -1,5 +1,6 @@
 errorhandler
 botmgr
+help
 cogs.base.basecmd
 cogs.base.pkgmgr
 cogs.extra.fun
