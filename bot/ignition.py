@@ -35,7 +35,7 @@ bot = commands.Bot(
     command_prefix=env.prefix,
     case_insensitive=True,
     intents=intents,
-    # help_command=None,
+    help_command=None,
     allowed_mentions=discord.AllowedMentions(
         users=True,         # Whether to ping individual user @mentions
         everyone=False,      # Whether to ping @everyone or @here mentions
@@ -57,32 +57,23 @@ class botinfo():
 
 def cogservice(filepath):
     if os.path.exists(filepath):
-        console.log(f"Found {filepath}")
         service = open(filepath, 'r')
         cogsenabled = service.read().split()
-        service.close()
-        for cogs in cogsenabled:
-            try:
-                cog_start_time = time.time()
-                console.log(f"loading {cogs}")
-                bot.load_extension(cogs)
-                cog_end_time = time.time()
-                console.success(
-                    f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
-            except Exception as e:
-                console.error(f"loading {cogs} failed:\n({e})")
     else:
         console.error(f"{filepath} was't found. Loading basic cogs.")
-        for cogs in basic_cogs:
-            try:
-                cog_start_time = time.time()
-                bot.load_extension(cogs)
-                cog_end_time = time.time()
-                console.success(
-                    f"loading {cogs.replace('.','/')} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
-            except Exception as e:
-                console.error(f"loading {cogs.replace('.','/')} failed ({e})")
-
+        cogsenabled = basic_cogs
+    console.log(f"Found {filepath}")
+    service.close()
+    for cogs in cogsenabled:
+        try:
+            cog_start_time = time.time()
+            console.log(f"loading {cogs}")
+            bot.load_extension(cogs)
+            cog_end_time = time.time()
+            console.success(
+                f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
+        except Exception as e:
+            console.error(f"loading {cogs} failed:\n({e})")
 
 
 @bot.event
