@@ -50,12 +50,10 @@ class env():
     loglevel = getenv('LOGLEVEL', 'BASIC')
 
     # Default Discord status.
-    status = getenv('BOTSTATUS', prefix)
+    status = getenv('STATUS', prefix)
 
     # Bot version
-    _versionjson = json.load(
-        open('bot/version.json')
-    )
+    _versionjson = json.load(open('bot/version.json'))
     version = _versionjson['botversion']
 
     docker = getenv('DOCKER', False)

@@ -7,7 +7,7 @@ RUN apt update && apt upgrade -y \
 	ffmpeg
 
 
-RUN useradd -ms /bin/bash nanobot
+#RUN useradd -ms /bin/bash nanobot
 
 RUN mkdir /nanobot
 WORKDIR /nanobot
@@ -18,5 +18,5 @@ WORKDIR /nanobot
 RUN pip install -r \
 	requirements.txt
 
-USER nanobot
+#USER nanobot
 ENTRYPOINT ["python", "bot/ignition.py"]

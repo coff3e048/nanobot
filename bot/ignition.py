@@ -17,24 +17,25 @@ import platform
 import psutil
 
 
-osinfo = platform.system()
 console.system(f"System: {platform.uname()}")
-if osinfo != "Linux":
-    console.warn(f"{osinfo} ISN'T TESTED. USE AT YOUR OWN RISK.")
+osplatform = platform.system()
+if osplatform != "Linux":
+    console.warn(f"{osplatform} ISN'T TESTED. USE AT YOUR OWN RISK.")
 
 
 intents = discord.Intents.default()
 intents.members = True
 
-console.botlog(
-    f"Starting {env.botname}"
+console.log(
+    f"Starting nanobot ({env.botname})"
 )
 
 # Bot params + info
 bot = commands.Bot(
     command_prefix=env.prefix,
     case_insensitive=True,
-    help_command=None,
+    intents=intents,
+    # help_command=None,
     allowed_mentions=discord.AllowedMentions(
         users=True,         # Whether to ping individual user @mentions
         everyone=False,      # Whether to ping @everyone or @here mentions
@@ -44,12 +45,14 @@ bot = commands.Bot(
 )
 
 
+
 class botinfo():
 
     author = "coff3e"
     name = env.botname
     version = env.version
     sourcepage = env.sourcepage
+
 
 
 def cogservice(filepath):
@@ -62,10 +65,9 @@ def cogservice(filepath):
             try:
                 cog_start_time = time.time()
                 console.log(f"loading {cogs}")
-
                 bot.load_extension(cogs)
                 cog_end_time = time.time()
-                console.botlog(
+                console.success(
                     f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
             except Exception as e:
                 console.error(f"loading {cogs} failed:\n({e})")
@@ -76,14 +78,16 @@ def cogservice(filepath):
                 cog_start_time = time.time()
                 bot.load_extension(cogs)
                 cog_end_time = time.time()
-                console.botlog(
+                console.success(
                     f"loading {cogs.replace('.','/')} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
             except Exception as e:
                 console.error(f"loading {cogs.replace('.','/')} failed ({e})")
 
 
+
 @bot.event
 async def on_ready():
+    console.success('Connection made!\n')
     # nanobot startup ascii art
     console.nanostyle(
         text2art(botinfo.name, 'random')
@@ -102,14 +106,30 @@ async def on_ready():
     print("----------------------------------------\n")
 
 # printing list of joined guilds and its data
-    #console.botlog(f"Joined guilds:")
-    for guilds in bot.guilds:
-        try:
-            # console.print(f'{[guilds]}')
-            pass
-        except Exception as e:
-            console.error(e)
-# load cogs
+    console.botlog("Joined guilds:")
+    num = 0
+    joinedguilds = bot.guilds
+    if len(joinedguilds) > 1:
+        for guilds in joinedguilds:
+            try:
+                num = num + 1
+                print(f'{num} - {guilds}')
+            except Exception as e:
+                console.error(e)
+        console.botlog(f'Total joined guilds: {len(joinedguilds)}')
+    else:
+        console.botlog(f"Not joined into any guilds. Invite the bot using ...")
+        
+
+    if intents.members:
+        users = bot.users
+        #try:
+        #    print(users)
+        #except Exception as e:
+        #    console.error(e)
+        console.botlog(f"Total unique users found: {len(users)}")
+
+# load cogs from cogservice function
     cogservice('config/service.txt')
 
 # printing the time it took to start the bot
@@ -118,19 +138,21 @@ async def on_ready():
         f"Took {round((end_time - start_time) * 1000)}ms to start-up"
     )
 
-# set the bot status and then screw off
+# set the bot status and then run as normal
     try:
         await bot.change_presence(
             activity=discord.Game(
-                name=env.status)
-        )
-        console.botlog(f"Set bot status as '[white]{env.status}[/]'")
+                name=env.status
+                )
+            )
+        console.success(f"Set bot status as '[white]{env.status}[/]'")
     except Exception as e:
         console.error(f"Setting bot status failed.\n{e}")
 
 
 # Loading TOKEN from .env
 try:
+    console.botlog("Attempting to connect to Discord API...")
     bot.run(env.token)
 except Exception as e:
     console.error(e)

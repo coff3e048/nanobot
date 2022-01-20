@@ -5,9 +5,10 @@ from nextcord.ext import commands
 from console import console
 
 
-class cogManagement(commands.Cog):
+class CogManager(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+
 
     @commands.command(name="cog", aliases=["pkg"])
     @commands.is_owner()
@@ -27,10 +28,8 @@ class cogManagement(commands.Cog):
                     for cogs in split_text:
                         if subcommand == 'load':
                             self.bot.load_extension(cogs)
-                            env_var.append(cogs)
                         elif subcommand == 'unload':
                             self.bot.unload_extension(cogs)
-                            env_var.remove(cogs)
                         elif subcommand == 'reload':
                             self.bot.reload_extension(cogs)
                         elif subcommand == 'download':
@@ -44,4 +43,4 @@ class cogManagement(commands.Cog):
 
 
 def setup(bot: commands.Bot):
-    bot.add_cog(cogManagement(bot))
+    bot.add_cog(CogManager(bot))

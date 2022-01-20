@@ -4,5 +4,6 @@ python-dotenv
 art 
 cowsay
 rich
-yt-dlp
+aiofiles
 aiohttp[speedups]
+discord-ui

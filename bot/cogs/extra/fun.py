@@ -13,17 +13,20 @@ class Fun(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+
     @commands.command(name="roll")
     async def roll(self, ctx, first: int = 1, second: int = 100):
         await ctx.reply(f"{random.randint(first,second)} *({first} - **{second}**)*")
 
+
     @commands.command(name="choose")
     async def choose(self, ctx: commands.Context, *, text: str = None):
-        if text == None:
-            await ctx.reply(f"You've given me nothing to chose between.")
-        else:
+        if text != None:
             await ctx.reply(random.choice(text.split()))
+        else:
+            await ctx.reply(f"You've given me nothing to chose between.")
 
+    
     @commands.command(name="8ball")
     async def eightball(self, ctx: commands.Context):
         responses = [
@@ -40,6 +43,7 @@ class Fun(commands.Cog):
         await asyncio.sleep(1)
         await msg.edit(f':8ball: {random.choice(responses)}')
 
+
     @commands.command(name="ascii")
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def ascii(self, ctx: commands.Context, *, text: str = "Hello World!"):
@@ -47,41 +51,44 @@ class Fun(commands.Cog):
         textart = text2art(text, 'random')
         file = f'ascii-{ctx.author.id}.txt'
         if len(textart) > 1000:
-            if os.path.exists(file):
-                os.remove(file)
+            if aiof.os.path.exists(file):
+                await aiof.os.remove(file)
                 pass
             else:
-                f = open(file, 'x')
+                f = await aiof.open(file, 'x')
                 f.write(str(textart))
                 f.close()
 
-                fr = open(file, 'r')
+                fr = await aiof.open(file, 'r')
                 await ctx.reply(file=discord.File(file))
                 f.close()
                 fr.close()
-                os.remove(file)
+                await aiof.os.remove(file)
         else:
             await ctx.reply(f"```{textart}```")
 
+
     @commands.command(name="insult")
-    async def insult(self, ctx, member: discord.Member = None):
-        insults = insult_list.list
+    async def insult(self, ctx, insults = insult_list.list, member: discord.Member = None):
+        randominsult = random.choice(insults)
         if member != None:
-            await ctx.reply(f"{member.mention} {random.choice(insults)}")
+            await ctx.reply(f"{member.mention} {randominsult}")
         else:
-            await ctx.reply(f"{ctx.author.mention} {random.choice(insults)}")
+            await ctx.reply(f"{ctx.author.mention} {randominsult}")
+
 
     @commands.command(name="duel", alias=["standoff"])
-    @commands.cooldown(1, 8, commands.BucketType.user)
+    @commands.cooldown(1, 4, commands.BucketType.user)
     async def duel(self, ctx, member1: discord.Member = None):
         msgembed_kys = discord.Embed(
             description="You shot yourself. Good job.",
             colour=discord.Colour.red()
         )
-
+        
         msgembed_ = discord.Embed(
-            description=f"**{ctx.author}** challenged **{member1}** to a duel!",
-        ).set_footer(
+            description=f"**{ctx.author.mention}** challenged **{member1.mention}** to a duel!",
+        )
+        msgembed_.set_footer(
             text="Be the first to click 💥 to win!"
         )
 
@@ -92,10 +99,20 @@ class Fun(commands.Cog):
 
         if member1 != None:
             msg = await ctx.reply(f'{thedude}{rightgun} {alotof_spaces} {leftgun}{thedude}', embed=msgembed_)
-            await asyncio.sleep(random.randint(3, 8))
+            await asyncio.sleep(random.randint(3, 6))
             await msg.add_reaction('💥')
-            cache_msg = discord.utils.get(msg.guild.members, id=msg.id)
 
+            check = lambda reaction, user: user == ctx.author or member1 and str(reaction.emoji) in "💥"
+            
+            for reactor in msg.reactions:
+                reactors = await bot.wait_for("reaction_add", check=check, timeout=10)
+                for member in reactors:
+                    if ctx.author in member:
+                        await ctx.reply(ctx.author.mention)
+                        break
+                    elif member1 in member:
+                        await ctx.reply(member1.mention)
+                        break
         else:
             msg = await ctx.reply(f'{thedude}{leftgun}')
             await asyncio.sleep(2)

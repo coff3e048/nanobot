@@ -7,7 +7,7 @@ class console():
     def _print(logtype = "log", text = str):
         x = datetime.now()
         xtime = x.strftime("%X")
-        fxtime = f"[white]{xtime}[/] |"
+        fxtime = f"[italic white]{xtime}[/] |"
 
         if logtype == 'nanostyle':
             text = f'[magenta]{text}[/magenta]'
@@ -21,6 +21,8 @@ class console():
             text = f'{fxtime} [bold underline yellow]WARN: {text}[/]'
         elif logtype == 'error':
             text = f'{fxtime} [bold underline red]ERRO: {text}[/]'
+        elif logtype == 'success':
+            text = f'{fxtime} [bold #32cd32]OK: {text}[/]'
         print(text)
 
     def nanostyle(text):
@@ -40,3 +42,6 @@ class console():
 
     def error(text):
         console._print('error',text)
+
+    def success(text):
+        console._print('success',text)
