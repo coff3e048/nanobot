@@ -67,13 +67,13 @@ def cogservice(filepath):
     for cogs in cogsenabled:
         try:
             cog_start_time = time.time()
-            console.log(f"loading {cogs}")
+            console.log(f"loading cog {cogs}")
             bot.load_extension(cogs)
             cog_end_time = time.time()
             console.success(
                 f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
         except Exception as e:
-            console.error(f"loading {cogs} failed:\n({e})")
+            console.error(f"loading cog {cogs} failed:\n({e})")
 
 
 @bot.event
@@ -90,7 +90,7 @@ async def on_ready():
     else:
         print(f"[white]\n{botinfo.version}[/]")
 
-# Discord API info
+# Discord API User info + prefix
     print("\n----------------------------------------")
     print(f'[magenta]Logged in as [/][underline]{bot.user}[/] ({bot.user.id})')
     print(f'[magenta]Prefix: {env.prefix}[/]')
@@ -114,6 +114,8 @@ async def on_ready():
 
     if intents.members:
         users = bot.users
+# Uncomment these lines below to print out all users the bot sees. Otherwise, it will only show you how many there are.
+        #console.botlog(f"Found users:")
         #try:
         #    print(users)
         #except Exception as e:

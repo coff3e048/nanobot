@@ -7,6 +7,7 @@ import asyncio
 from nextcord.ext import commands
 from env_var import env
 
+
 class Base(commands.Cog):
     """A couple of simple commands."""
 

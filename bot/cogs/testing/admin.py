@@ -6,36 +6,20 @@ class admin(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    async def adminreply(punish, member, reason):
-        msg = f"{member.mention} (**{member.userid}**)"
-        _withreason = f"for `{reason}`"
-        if punish == "kick" or "ban":
-            if reason != None:
-                msg = f"{msg} got {punish}ed {_withreason}"
-            else
-                msg = f"{msg} got {punish}ed"
-        return msg
-
 
     @commands.command(name="kick")
-    async def kickmember(self, ctx: commands.Context, member: discord.Member = None, *, reason: str):
+    @commands.has_permissions(kick_members=True)
+    async def kickmember(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = "No given reason"):
         await member.kick(reason=reason)
-        await ctx.reply(adminreply("kick", member, reason)
-        
+        msg = f"{member.mention} (*{member.id}*) was kicked for `{reason}`"
+        await ctx.reply(msg)
 
     @commands.command(name="ban")
     @commands.has_permissions(ban_members=True)
-    async def banmember(self, ctx: commands.Context, member: discord.Member = None, *, reason: str):
+    async def banmember(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = "No given reason"):
         await member.ban(reason=reason)
-        await ctx.reply(adminreply("ban", member, reason)
-
-
-    @commands.command(name="masskick")
-    async def mass_kickmember(self, ctx: commands.Context, *, members: discord.Member = None):
-        for members in members:
-            await member.ban(reason=reason)
-        await ctx.reply()
-
+        msg = f"{member.mention} (*{member.id}*) was banned for `{reason}`"
+        await ctx.reply(msg)
 
 
 def setup(bot: commands.Bot):

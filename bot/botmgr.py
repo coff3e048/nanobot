@@ -20,33 +20,41 @@ class botManagement(commands.Cog):
             await ctx.reply(file=discord.File(file))
         except Exception as e:
             await ctx.reply(f'```{e}```')
+        else:
+            await ctx.author.send(file=discord.File(file))
       
     
     @commands.command(name='sysinfo')
-    async def client_sysinfo(self, ctx: commands.Context):
+    async def client_sysinfo(self, ctx: commands.Context, full: str):
         botavatar = self.bot.user.avatar.url
+        botuser = self.bot.user
+        pyversion_imp = platform.python_implementation()
+        pyversion = platform.python_version()
+        nxtcord_ver = nextcord.__version__
+        osplatform = sysconfig.get_platform()
+        osplatform_rel = platform.release()
         # https://cog-creators.github.io/discord-embed-sandbox/
         embed = discord.Embed(
             title='Instance information',
             color=discord.Colour.purple()
         )
         embed.set_thumbnail(
-            url=self.bot.user.avatar.url
+            url=botavatar
         )
         embed.add_field(
             name='Name', value=f'`{env.botname}`', inline=True
         )
         embed.add_field(
-            name='Discord User', value=f'{self.bot.user}\n{self.bot.user.mention}', inline=True
+            name='Discord User', value=f'{botuser}\n{botuser.mention}', inline=True
         )
         embed.add_field(
-            name='Python Version', value=f'`{platform.python_implementation()} {platform.python_version()}`', inline=False
+            name='Python Version', value=f'`{pyversion_imp} {pyversion}`', inline=False
         )
         embed.add_field(
-            name='Nextcord Version', value=f'`{nextcord.__version__}`', inline=True
+            name='Nextcord Version', value=f'`{nxtcord_ver}`', inline=True
         )
         embed.add_field(
-            name='OS', value=f'`{sysconfig.get_platform()} {platform.release()}`', inline=False
+            name='OS', value=f'`{osplatform} {osplatform_rel}`', inline=False
         )
         await ctx.reply(embed=embed)
 
