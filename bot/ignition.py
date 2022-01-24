@@ -22,13 +22,21 @@ osplatform = platform.system()
 if osplatform != "Linux":
     console.warn(f"{osplatform} ISN'T TESTED. USE AT YOUR OWN RISK.")
 
+if env.activitytype == 'playing':
+    activitytype = discord.ActivityType.playing
+elif env.activitytype == 'watching':
+    activitytype = discord.ActivityType.watching
+
 
 intents = discord.Intents.default()
 intents.members = True
+intents.guilds = True
+activity = discord.Activity(name=env.botactivity, type=activitytype)
 
 console.log(
     f"Starting nanobot ({env.botname})"
 )
+
 
 # Bot params + info
 bot = commands.Bot(
@@ -36,6 +44,7 @@ bot = commands.Bot(
     case_insensitive=True,
     intents=intents,
     help_command=None,
+    activity=activity,
     allowed_mentions=discord.AllowedMentions(
         users=True,         # Whether to ping individual user @mentions
         everyone=False,      # Whether to ping @everyone or @here mentions
@@ -43,7 +52,6 @@ bot = commands.Bot(
         replied_user=True,  # Whether to ping on replies to messages
     ),
 )
-
 
 
 class botinfo():
@@ -54,11 +62,10 @@ class botinfo():
     sourcepage = env.sourcepage
 
 
-
 def cogservice(filepath):
     if os.path.exists(filepath):
-        service = open(filepath, 'r')
-        cogsenabled = service.read().split()
+        with open(filepath, 'r') as service:
+            cogsenabled = service.read().split()
     else:
         console.error(f"{filepath} was't found. Loading basic cogs.")
         cogsenabled = basic_cogs
@@ -130,17 +137,6 @@ async def on_ready():
     console.log(
         f"Took {round((end_time - start_time) * 1000)}ms to start-up"
     )
-
-# set the bot status and then run as normal
-    try:
-        await bot.change_presence(
-            activity=discord.Game(
-                name=env.status
-                )
-            )
-        console.success(f"Set bot status as '[white]{env.status}[/]'")
-    except Exception as e:
-        console.error(f"Setting bot status failed.\n{e}")
 
 
 # Loading TOKEN from .env
