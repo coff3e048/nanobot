@@ -11,10 +11,10 @@ from os import getenv
 # SOURCEPAGE
 # USERID
 # TOKEN (required)
-# LOGLEVEL
-# BOTSTATUS
+# LOGLEVEL (w.i.p)
+# ACTIVITYTYPE ('Playing', 'Listening')
+# BOTACTIVITY
 # BOTVERSION
-# DOCKER
 
 class env():
     # Cosmetic name of the bot instance
@@ -32,7 +32,7 @@ class env():
     prefix = getenv('PREFIX', '!!')
 
     # Github source page
-    sourcepage = getenv('SOURCEPAGE', 'https://github.com/pascal48/nanobot')
+    sourcepage = getenv('SOURCEPAGE', 'https://github.com/coff3e048/nanobot')
 
     # Getting the bot's user ID
     userid = getenv('BOTID')
@@ -50,10 +50,9 @@ class env():
     loglevel = getenv('LOGLEVEL', 'BASIC')
 
     # Default Discord status.
-    status = getenv('STATUS', prefix)
+    activitytype = getenv('ACTIVITYTYPE', 'listening')
+    botactivity = getenv('STATUS', f'to {prefix}')
 
     # Bot version
     _versionjson = json.load(open('bot/version.json'))
     version = _versionjson['botversion']
-
-    docker = getenv('DOCKER', False)

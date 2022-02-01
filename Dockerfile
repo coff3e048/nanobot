@@ -2,7 +2,7 @@ FROM python:3.10-slim-bullseye
 
 
 RUN apt update && apt upgrade -y \
-	&& apt install -y curl git \
+RUN apt install -y curl git \
 	gcc g++ \
 	ffmpeg
 
@@ -14,9 +14,8 @@ WORKDIR /nanobot
 
 COPY ./requirements.txt requirements.txt
 
-WORKDIR /nanobot
 RUN pip install -r \
 	requirements.txt
 
 #USER nanobot
-ENTRYPOINT ["python", "bot/ignition.py"]
+ENTRYPOINT ["python", "bot/main.py"]

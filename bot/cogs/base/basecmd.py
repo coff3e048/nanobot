@@ -73,7 +73,7 @@ class Base(commands.Cog):
 
     @commands.command(name="avatar", aliases=["pfp", "a"])
     async def get_avatar(self, ctx: commands.Context, member: discord.Member = None):
-        if member == None:
+        if member is None:
             member = ctx.author
         
         avatarurl=member.avatar.url

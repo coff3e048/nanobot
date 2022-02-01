@@ -2,7 +2,6 @@ import random
 import asyncio
 import os
 import discord
-from assets.py.insultfile import insult_list
 from nextcord.ext import commands
 from art import text2art
 
@@ -21,7 +20,7 @@ class Fun(commands.Cog):
 
     @commands.command(name="choose")
     async def choose(self, ctx: commands.Context, *, text: str = None):
-        if text != None:
+        if text is not None:
             await ctx.reply(random.choice(text.split()))
         else:
             await ctx.reply(f"You've given me nothing to chose between.")
@@ -68,15 +67,6 @@ class Fun(commands.Cog):
             await ctx.reply(f"```{textart}```")
 
 
-    @commands.command(name="insult")
-    async def insult(self, ctx, insults = insult_list.list, member: discord.Member = None):
-        randominsult = random.choice(insults)
-        if member != None:
-            await ctx.reply(f"{member.mention} {randominsult}")
-        else:
-            await ctx.reply(f"{ctx.author.mention} {randominsult}")
-
-
     @commands.command(name="duel", alias=["standoff"])
     @commands.cooldown(1, 4, commands.BucketType.user)
     async def duel(self, ctx, member1: discord.Member = None):
@@ -97,7 +87,7 @@ class Fun(commands.Cog):
         rightgun = '<a:GunShake_r:921998646885634068>'
         alotof_spaces = "        "
 
-        if member1 != None:
+        if member1 is not None:
             msg = await ctx.reply(f'{thedude}{rightgun} {alotof_spaces} {leftgun}{thedude}', embed=msgembed_)
             await asyncio.sleep(random.randint(3, 6))
             await msg.add_reaction('💥')

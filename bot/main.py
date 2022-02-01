@@ -99,8 +99,10 @@ async def on_ready():
 
 # Discord API User info + prefix
     print("\n----------------------------------------")
+    print()
     print(f'[magenta]Logged in as [/][underline]{bot.user}[/] ({bot.user.id})')
     print(f'[magenta]Prefix: {env.prefix}[/]')
+    print()
     print("----------------------------------------\n")
 
 # printing list of joined guilds and its data

@@ -75,7 +75,7 @@ class botManagement(commands.Cog):
 
     @bmg.group(name='exit', aliases=['quit','bye','shutdown','stop'])
     async def quit(self, ctx: commands.Context, timeset: int = None):
-        if timeset != None:
+        if timeset is not None:
             message = f'Stopping in {timeset} seconds.'
             await ctx.reply(message)
             await asyncio.sleep(timeset)

@@ -30,8 +30,7 @@ class ErrorHandler(commands.Cog):
             reaction = '😳'
             response = f"Only the bot owner can use this command."
         else:
-            response = f"Something went very wrong.\n```{error}```"
-            reaction = '🔥'
+            response = f"```{error}```"
 
         if response != None:
             await ctx.reply(embed=discord.Embed(

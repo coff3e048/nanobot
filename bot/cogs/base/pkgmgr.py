@@ -15,7 +15,7 @@ class CogManager(commands.Cog):
     async def cog(self, ctx: commands.Context, subcommand: str = 'list', cog: str = None):
         subcommands = ['list', 'load', 'unload', 'reload']
         if subcommand in subcommands:
-            if subcommand == 'list':
+            if subcommand is 'list':
                 coglist = str(self.bot.cogs).replace('[', '').replace(']', '').replace(
                     "'", "").replace(",", "\n").replace(" ", "")
                 try:
@@ -26,13 +26,13 @@ class CogManager(commands.Cog):
                 split_text = cog.split()
                 try:
                     for cogs in split_text:
-                        if subcommand == 'load':
+                        if subcommand is 'load':
                             self.bot.load_extension(cogs)
-                        elif subcommand == 'unload':
+                        elif subcommand is 'unload':
                             self.bot.unload_extension(cogs)
-                        elif subcommand == 'reload':
+                        elif subcommand is 'reload':
                             self.bot.reload_extension(cogs)
-                        elif subcommand == 'download':
+                        elif subcommand is 'download':
                             await ctx.reply('Coming soon!')
                     await ctx.reply(f"```{split_text}``` {subcommand}ed.")
                 except Exception as e:
