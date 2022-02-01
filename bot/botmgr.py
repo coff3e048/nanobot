@@ -62,7 +62,7 @@ class botManagement(commands.Cog):
     @commands.group(name='bmg')
     @commands.is_owner()
     async def bmg(self, ctx: commands.Context):
-        if ctx.invoked_subcommand is None:
+        if ctx.invoked_subcommand == None:
             await ctx.reply('No invoked subcommand')
 
     @bmg.group()
@@ -75,7 +75,7 @@ class botManagement(commands.Cog):
 
     @bmg.group(name='exit', aliases=['quit','bye','shutdown','stop'])
     async def quit(self, ctx: commands.Context, timeset: int = None):
-        if timeset is not None:
+        if timeset != None:
             message = f'Stopping in {timeset} seconds.'
             await ctx.reply(message)
             await asyncio.sleep(timeset)

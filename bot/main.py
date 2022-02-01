@@ -137,7 +137,7 @@ async def on_ready():
 # printing the time it took to start the bot
     end_time = time.time()
     console.log(
-        f"Took {round((end_time - start_time) * 1000)}ms to start-up"
+        f"Took {round((end_time - start_time) * 1000)}ms ({round((end_time - start_time) * 1)}s) to start-up"
     )
 
 

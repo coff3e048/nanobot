@@ -25,6 +25,8 @@ class console():
             text = f'{fxtime} [bold #32cd32]OK: {text}[/]'
         print(text)
 
+    # These functions are used for convenience. It's not pretty, but it works?
+
     def nanostyle(text):
         console._print('nanostyle',text)
           
