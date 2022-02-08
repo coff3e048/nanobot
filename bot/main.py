@@ -20,12 +20,14 @@ import psutil
 console.system(f"System: {platform.uname()}")
 osplatform = platform.system()
 if osplatform != "Linux":
-    console.warn(f"{osplatform} ISN'T TESTED. USE AT YOUR OWN RISK.")
+    console.warn(f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK.")
 
 if env.activitytype == 'playing':
     activitytype = discord.ActivityType.playing
 elif env.activitytype == 'watching':
     activitytype = discord.ActivityType.watching
+elif env.activitytype == 'listening':
+    activitytype = discord.ActivityType.listening
 
 
 intents = discord.Intents.default()
@@ -64,12 +66,12 @@ class botinfo():
 
 def cogservice(filepath):
     if os.path.exists(filepath):
+        console.log(f"Found {filepath}")
         with open(filepath, 'r') as service:
             cogsenabled = service.read().split()
     else:
         console.error(f"{filepath} was't found. Loading basic cogs.")
         cogsenabled = basic_cogs
-    console.log(f"Found {filepath}")
     service.close()
     for cogs in cogsenabled:
         try:
@@ -81,7 +83,6 @@ def cogservice(filepath):
                 f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
         except Exception as e:
             console.error(f"loading cog {cogs} failed:\n({e})")
-
 
 @bot.event
 async def on_ready():
@@ -140,11 +141,11 @@ async def on_ready():
         f"Took {round((end_time - start_time) * 1000)}ms ({round((end_time - start_time) * 1)}s) to start-up"
     )
 
-
-# Loading TOKEN from .env
-try:
+if __name__ == "__main__":
+    # Loading TOKEN from .env
     console.botlog("Attempting to connect to Discord API...")
-    bot.run(env.token)
-except Exception as e:
-    console.error(e)
-    exit()
+    try:
+        bot.run(env.token)
+    except Exception as e:
+        console.error(e)
+        exit()
