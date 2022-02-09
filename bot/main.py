@@ -70,8 +70,15 @@ def cogservice(filepath):
         with open(filepath, 'r') as service:
             cogsenabled = service.read().split()
     else:
-        console.error(f"{filepath} was't found. Loading basic cogs.")
         cogsenabled = basic_cogs
+        console.error(f"'{filepath}' wasn't found. Create the file with basic cogs? (Y/n)")
+        useri = input('>> ')
+        if 'y' in useri:
+            if not os.path.exists('config'):
+                os.mkdir('config')
+            f = open('service.txt', 'w')
+            for cogs in cogsenabled:
+                f.write(f"{cogs}\n")
     service.close()
     for cogs in cogsenabled:
         try:
@@ -109,15 +116,15 @@ async def on_ready():
 # printing list of joined guilds and its data
     console.botlog("Joined guilds:")
     num = 0
-    joinedguilds = bot.guilds
-    if len(joinedguilds) > 1:
-        for guilds in joinedguilds:
+    joined = bot.guilds
+    if len(joined) > 1:
+        for guilds in joined:
             try:
                 num = num + 1
-                print(f'{num} - {guilds}')
+                print(f'\t\t\t{num} - {guilds}')
             except Exception as e:
                 console.error(e)
-        console.botlog(f'Total joined guilds: {len(joinedguilds)}')
+        console.botlog(f'Total joined guilds: {len(joined)}')
     else:
         console.botlog(f"Not joined into any guilds. Invite the bot using ...")
         
