@@ -13,7 +13,7 @@ class admin(commands.Cog):
         await member.kick(reason=reason)
         msg = f"{member.mention} (*{member.id}*) was kicked for `{reason}`"
         await ctx.reply(msg)
-
+    # Both of these commands are troublesome, and sometimes dont actually do anything. User IDs dont seem to work either
     @commands.command(name="ban")
     @commands.has_permissions(ban_members=True)
     async def banmember(self, ctx: commands.Context, member: discord.Member = None, *, reason: str = "No given reason"):
