@@ -1,28 +1,26 @@
-import psutil
-import platform
-import os
-import sys
-import logging
-import json
-import discord
-from rich import print
-from console import console
-from nextcord.ext import commands
-from env_var import env
-from art import text2art
-from aiohttp import request
 import asyncio
+from aiohttp import request
+from art import text2art
+from nextcord.ext import commands
+from console import console
+from rich import print
+from env_var import env
+import discord
+import json
+import logging
+import sys
+import os
+import platform
+import psutil
 import time
 # Log the amount of time it takes to start the bot
 start_time = time.time()
 
 
-class botinfo():
-
-    author = "coff3e"
-    name = env.botname
-    version = env.version
-    sourcepage = env.sourcepage
+author = "coff3e"
+name = env.botname
+version = env.version
+sourcepage = env.sourcepage
 
 
 console.system(f"System:\t {platform.uname()}")
@@ -31,12 +29,14 @@ if osplatform != "Linux":
     console.warn(
         f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK.")
 
+
 if env.activitytype == 'playing':
     activitytype = discord.ActivityType.playing
 elif env.activitytype == 'watching':
     activitytype = discord.ActivityType.watching
 elif env.activitytype == 'listening':
     activitytype = discord.ActivityType.listening
+
 
 intents = discord.Intents.default()
 intents.members = True
@@ -45,7 +45,7 @@ activity = discord.Activity(name=env.botactivity, type=activitytype)
 
 
 console.log(
-    f"Starting nanobot ({env.botname})"
+    f"Starting nanobot ({ name})"
 )
 
 
@@ -105,14 +105,15 @@ def cogservice(filepath):
 
 async def botupdate(URL: str = "https://raw.githubusercontent.com/get-coff3e/nanobot/testing/bot/version.json"):
     async with request("GET", URL, headers={}) as response:
-        if response.status == 200:
-            data = await response.json(content_type=None)
-            newversion = data["botversion"]
-            if newversion != botinfo.version:
-                console.warn(
-                    f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{botinfo.version}\n\t\t\tLatest found:\t\t{newversion}")
-        else:
-            print("Couldn't reach github")
+        if env.updatemsg:
+            if response.status == 200:
+                data = await response.json(content_type=None)
+                newversion = data["botversion"]
+                if newversion != version:
+                    print(
+                        f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{ version}\n\t\t\tLatest found:\t\t{newversion}\n\t\t\tIf you would like to disable this message, set [bold orange]UPDATEMSG[/] to False in your environment")
+            else:
+                print("Couldn't reach github")
 
 
 @bot.event
@@ -120,15 +121,15 @@ async def on_ready():
     console.success('Connection made!\n')
     # nanobot startup ascii art
     console.nanostyle(
-        text2art(botinfo.name, 'random')
+        text2art(name, 'random')
     )
 
-    if "DEV" in botinfo.version:
-        print(f"[red]\n{botinfo.version}[/]")
+    if "DEV" in version:
+        print(f"[red]\nVersion: {version}[/]")
         print(f"[bold red]! ! !   DEV VERSION   ! ! ![/]\n")
-        print(f"[red]Report bugs to: {botinfo.sourcepage}[/]")
+        print(f"[red]Report bugs to: {sourcepage}[/]")
     else:
-        print(f"[white]\n{botinfo.version}[/]")
+        print(f"[white]\nVersion: {version}[/]")
 
 # Discord API User info + prefix
     print("\n----------------------------------------")
@@ -173,6 +174,7 @@ async def on_ready():
     )
 
     await botupdate()
+
 
 if __name__ == "__main__":
     # Loading TOKEN from .env

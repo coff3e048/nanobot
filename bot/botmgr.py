@@ -35,7 +35,7 @@ class botManagement(commands.Cog):
         # https://cog-creators.github.io/discord-embed-sandbox/
         embed = discord.Embed(
             title='Instance information',
-            color=discord.Colour.purple()
+            color=self.bot.user.accent_color
         )
         embed.set_thumbnail(
             url=botavatar

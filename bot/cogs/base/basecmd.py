@@ -76,7 +76,7 @@ class Base(commands.Cog):
         avatarEmbed = discord.Embed(
             title=f"{member.name}'s avatar",
             url=avatarurl,
-            color=member.color
+            color=self.bot.user.accent_color
         )
         avatarEmbed.set_image(
             url=avatarurl

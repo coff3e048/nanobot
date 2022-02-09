@@ -31,12 +31,12 @@ class ErrorHandler(commands.Cog):
         else:
             response = f"```{error}```"
 
-        if response != None:
+        if not response:
             await ctx.reply(embed=discord.Embed(
                 description=response,
                 colour=Colour.red()
             ))
-        elif reaction != None:
+        elif not reaction:
             await ctx.message.add_reaction(reaction)
 
         # Log the error in the terminal interface

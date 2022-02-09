@@ -20,6 +20,8 @@ from os import getenv
 
 class env():
     # Cosmetic name of the bot instance
+    updatemsg = getenv('UPDATEMSG', True)
+
     nextcordlog = getenv('NEXTCORDLOG', False)
     if nextcordlog:
         logger = logging.getLogger('nextcord')
@@ -46,7 +48,7 @@ class env():
 
     # Setting bot token
     token = getenv('TOKEN')
-    if token == None:
+    if not token:
         console.error(
             f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
         token = str(input('>> '))

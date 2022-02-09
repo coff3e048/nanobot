@@ -18,7 +18,7 @@ class Fun(commands.Cog):
 
     @commands.command(name="choose")
     async def choose(self, ctx: commands.Context, *, text: str = None):
-        if text is not None:
+        if text:
             await ctx.reply(random.choice(text.split()))
         else:
             await ctx.reply(f"You've given me nothing to chose between.")
@@ -56,7 +56,7 @@ class Fun(commands.Cog):
         # This command is still useless. Fix it later
         msgembed_kys = discord.Embed(
             description="You shot yourself. Good job.",
-            colour=discord.Colour.red()
+            color=self.bot.user.accent_color
         )
 
         msgembed_ = discord.Embed(

@@ -30,7 +30,7 @@ class ytdlcmd(commands.Cog):
         dlpath = "'.temp/%(id)s.%(ext)s'"
         usage = f"{env.prefix}ytdl 'https://youtube.com/...' video / audio (default: video)"
 
-        if query == None:
+        if not query:
             await ctx.reply(f"No YouTube URL found.\n```{usage}```")
         else:
             if convert == 'video':
