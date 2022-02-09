@@ -108,9 +108,9 @@ async def botupdate(URL: str = "https://raw.githubusercontent.com/get-coff3e/nan
         if response.status == 200:
             data = await response.json(content_type=None)
             newversion = data["botversion"]
-            if newversion != env.version:
+            if newversion != botinfo.version:
                 console.warn(
-                    f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{env.version}\n\t\t\tLatest found:\t\t{newversion}")
+                    f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{botinfo.version}\n\t\t\tLatest found:\t\t{newversion}")
         else:
             print("Couldn't reach github")
 
