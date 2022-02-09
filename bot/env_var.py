@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from console import console
 from os import getenv
 
@@ -33,8 +34,8 @@ class env():
 
     # Github source page
     sourcepage = getenv('SOURCEPAGE', 'https://github.com/coff3e048/nanobot')
+    webdomain = getenv('WEBDOMAIN', 'nanobot.byteburns.us')
 
-    # Getting the bot's user ID
     userid = getenv('BOTID')
 
     # Default bot invite (could be another link)
@@ -43,9 +44,8 @@ class env():
     # Setting bot token
     token = getenv('TOKEN')
     if token == None:
-        console.error(f"No token in environment, Input your token")
-        token = input ('>> ')
-
+        console.error(f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
+        token = str(input('>> '))
     # Instance log level
     # Log levels:
     # 
@@ -58,7 +58,7 @@ class env():
 
     # Default Discord status.
     activitytype = getenv('ACTIVITYTYPE', 'listening')
-    botactivity = getenv('STATUS', f'to {prefix}')
+    botactivity = getenv('STATUS', f'{prefix}')
 
     # Bot version
     _versionjson = json.load(open('bot/version.json'))
