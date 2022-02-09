@@ -17,6 +17,14 @@ import platform
 import psutil
 
 
+class botinfo():
+
+    author = "coff3e"
+    name = env.botname
+    version = env.version
+    sourcepage = env.sourcepage
+
+
 console.system(f"System:\t {platform.uname()}")
 osplatform = platform.system()
 if osplatform != "Linux":
@@ -29,11 +37,11 @@ elif env.activitytype == 'watching':
 elif env.activitytype == 'listening':
     activitytype = discord.ActivityType.listening
 
-
 intents = discord.Intents.default()
 intents.members = True
 intents.guilds = True
 activity = discord.Activity(name=env.botactivity, type=activitytype)
+
 
 console.log(
     f"Starting nanobot ({env.botname})"
@@ -56,15 +64,14 @@ bot = commands.Bot(
 )
 
 
-class botinfo():
-
-    author = "coff3e"
-    name = env.botname
-    version = env.version
-    sourcepage = env.sourcepage
-
-
 def cogservice(filepath):
+    basic_cogs = ['errorhandler',
+    'botmgr',
+    'help',
+    'cogs.testing.admin
+    ]
+cogs.base.basecmd
+cogs.base.pkgmgr']
     if os.path.exists(filepath):
         console.log(f"Found {filepath}")
         with open(filepath, 'r') as service:
