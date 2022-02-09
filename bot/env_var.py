@@ -33,7 +33,7 @@ class env():
     prefix = getenv('PREFIX', '!!')
 
     # Github source page
-    sourcepage = getenv('SOURCEPAGE', 'https://github.com/coff3e048/nanobot')
+    sourcepage = getenv('SOURCEPAGE', 'https://github.com/get-coff3e/nanobot')
     webdomain = getenv('WEBDOMAIN', 'nanobot.byteburns.us')
 
     userid = getenv('BOTID')
