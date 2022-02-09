@@ -45,11 +45,15 @@ class ytdlcmd(commands.Cog):
             else:
                 await ctx.reply(f"Invalid usage.\n```{usage}```")
 
-        # And here lies the major problem.
+            if not os.path.exists('temp'):
+                os.mkdir('temp')
+
+            # a pretty unsafe way of doing it, but yt_dlp doesn't support async io
+            # i cant think of a better way to do this.
             try:
                 subprocesspipe = asyncio.subprocess.PIPE
                 child = await asyncio.create_subprocess_shell(
-                    f"./bin/yt-dlp --max-filesize 300M -f 22/18/5/36 --no-playlist {opts} --break-on-existing --no-exec -o {dlpath} {query}",
+                    f"python3 -m yt_dlp --max-filesize 350M -f 22/18/5/36 --no-playlist {opts} --break-on-existing --no-exec -o {dlpath} {query}",
                     stderr=subprocesspipe,
                     stdout=subprocesspipe
                 )
@@ -66,16 +70,15 @@ class ytdlcmd(commands.Cog):
                 try:
                     await ctx.reply(file=discord.File(f"temp/{vidfile}"))
                     deletemsg
-                    await asyncio.sleep(14400)
-                    await aiof.os.remove(f"temp/{vidfile}")
                 except Exception as e:
                     await ctx.reply(f"```{e}``` http://{env.webdomain}/temp/{vidfile}")
                     deletemsg
             else:
                 await msg.reply(f"Something went wrong. ```{exitcode}```")
-
-                
-
+            # remove the file after a certain amount of time (in this case, 14400 seconds is 4 hours)    
+            await asyncio.sleep(14400)
+            await aiof.os.remove(f"temp/{vidfile}")
+            
 
 def setup(bot: commands.Bot):
     bot.add_cog(ytdlcmd(bot))
