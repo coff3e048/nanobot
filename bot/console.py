@@ -12,17 +12,17 @@ class console():
         if logtype == 'nanostyle':
             text = f'[magenta]{text}[/magenta]'
         elif logtype == 'log':
-            text = f'{fxtime} [[dim]INFO[/]]:\t {text}'
+            text = f'{fxtime} [[dim]INFO[/]]:\t{text}'
         elif logtype == 'botlog':
-            text = f'{fxtime} [[blue]DISCORD[/]]:\t {text}'
+            text = f'{fxtime} [[blue]DISCORD[/]]:\t{text}'
         elif logtype == 'system':
             text=f'{fxtime} {text}'
         elif logtype == 'warn':
-            text = f'{fxtime} [[bold underline yellow]WARN[/]]:\t {text}'
+            text = f'{fxtime} [[bold underline yellow]WARN[/]]:\t{text}'
         elif logtype == 'error':
-            text = f'{fxtime} [[bold underline red]ERRO[/]]:\t {text}'
+            text = f'{fxtime} [[bold underline red]ERRO[/]]:\t{text}'
         elif logtype == 'success':
-            text = f'{fxtime} [[bold #32cd32]OK[/]]:\t {text}'
+            text = f'{fxtime} [[bold #32cd32]OK[/]]:\t{text}'
         print(text)
 
     # These functions are used for convenience. It's not pretty, but it works?
