@@ -1,8 +1,8 @@
 import time
 # Log the amount of time it takes to start the bot
 start_time = time.time()
-import aiohttp
 import asyncio
+from aiohttp import request
 from art import text2art
 from env_var import env
 from nextcord.ext import commands
@@ -76,7 +76,7 @@ def cogservice(filepath):
         if 'y' in useri:
             if not os.path.exists('config'):
                 os.mkdir('config')
-            f = open('service.txt', 'w')
+            f = open('config/service.txt', 'w')
             for cogs in cogsenabled:
                 f.write(f"{cogs}\n")
     service.close()
@@ -86,11 +86,24 @@ def cogservice(filepath):
             console.log(f"loading cog {cogs}")
             bot.load_extension(cogs)
             cog_end_time = time.time()
+            sys.stdout.write("\033[F")      # Clears previous line
             console.success(
                 f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
         except Exception as e:
+            sys.stdout.write("\033[F") 
             console.error(f"loading cog {cogs} failed:\n({e})")
 
+
+async def botupdate(URL: str = "https://raw.githubusercontent.com/get-coff3e/nanobot/testing/bot/version.json"):
+    async with request("GET", URL, headers={}) as response:
+            if response.status == 200:
+                data = await response.json(content_type=None)
+                newversion = data["botversion"]
+                if newversion != env.version:
+                    console.warn(f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{env.version}\n\t\t\tLatest found:\t\t{newversion}")
+            else:
+                print("Couldn't reach github")
+        
 @bot.event
 async def on_ready():
     console.success('Connection made!\n')
@@ -98,6 +111,7 @@ async def on_ready():
     console.nanostyle(
         text2art(botinfo.name, 'random')
     )
+
     if "DEV" in botinfo.version:
         print(f"[red]\n{botinfo.version}[/]")
         print(f"[bold red]! ! !   DEV VERSION   ! ! ![/]\n")
@@ -147,6 +161,8 @@ async def on_ready():
     console.log(
         f"Took {round((end_time - start_time) * 1000)}ms ({round((end_time - start_time) * 1)}s) to start-up"
     )
+
+    await botupdate()
 
 if __name__ == "__main__":
     # Loading TOKEN from .env
