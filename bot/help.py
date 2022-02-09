@@ -47,14 +47,14 @@ class Help(commands.Cog):
     # @commands.bot_has_permissions(add_reactions=True,embed_links=True)
     async def help(self, ctx, *input):
         """Shows all modules of that bot"""
-        
+
         # !SET THOSE VARIABLES TO MAKE THE COG FUNCTIONAL!
-        prefix = '!!'# ENTER YOUR PREFIX - loaded from config, as string or how ever you want!
-        version = None # enter version of your code
-        
-        # setting owner name - if you don't wanna be mentioned remove line 49-60 and adjust help text (line 88) 
-        owner = None	# ENTER YOU DISCORD-ID
-        owner_name = None	# ENTER YOUR USERNAME#1234
+        prefix = '!!'  # ENTER YOUR PREFIX - loaded from config, as string or how ever you want!
+        version = None  # enter version of your code
+
+        # setting owner name - if you don't wanna be mentioned remove line 49-60 and adjust help text (line 88)
+        owner = None  # ENTER YOU DISCORD-ID
+        owner_name = None  # ENTER YOUR USERNAME#1234
 
         # checks if cog parameter was given
         # if not: sending all modules and commands not associated with a cog
@@ -89,7 +89,8 @@ class Help(commands.Cog):
 
             # adding those commands to embed
             if commands_desc:
-                emb.add_field(name='Not belonging to a module', value=commands_desc, inline=False)
+                emb.add_field(name='Not belonging to a module',
+                              value=commands_desc, inline=False)
 
         # block called when one cog-name is given
         # trying to find matching cog and it's commands
@@ -108,7 +109,8 @@ class Help(commands.Cog):
                     for command in self.bot.get_cog(cog).get_commands():
                         # if cog is not hidden
                         if not command.hidden:
-                            emb.add_field(name=f"`{prefix}{command.name}`", value=command.help, inline=False)
+                            emb.add_field(
+                                name=f"`{prefix}{command.name}`", value=command.help, inline=False)
                     # found cog - breaking loop
                     break
 

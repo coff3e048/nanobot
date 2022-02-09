@@ -5,7 +5,7 @@ from console import console
 from os import getenv
 
 # Valid environment variables:
-# 
+#
 # NEXTCORDLOG
 # BOTNAME
 # PREFIX
@@ -17,14 +17,17 @@ from os import getenv
 # BOTACTIVITY
 # BOTVERSION
 
+
 class env():
     # Cosmetic name of the bot instance
     nextcordlog = getenv('NEXTCORDLOG', False)
     if nextcordlog:
         logger = logging.getLogger('nextcord')
         logger.setLevel(logging.DEBUG)
-        handler = logging.FileHandler(filename='log/nextcord.log', encoding='utf-8', mode='w')
-        handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+        handler = logging.FileHandler(
+            filename='log/nextcord.log', encoding='utf-8', mode='w')
+        handler.setFormatter(logging.Formatter(
+            '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
         logger.addHandler(handler)
 
     botname = getenv('BOTNAME', "nanobot")
@@ -44,17 +47,17 @@ class env():
     # Setting bot token
     token = getenv('TOKEN')
     if token == None:
-        console.error(f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
+        console.error(
+            f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
         token = str(input('>> '))
     # Instance log level
     # Log levels:
-    # 
+    #
     # NONE
     # BASIC
     # MORE
     # VERBOSE
     loglevel = getenv('LOGLEVEL', 'NONE')
-
 
     # Default Discord status.
     activitytype = getenv('ACTIVITYTYPE', 'listening')

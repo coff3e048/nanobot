@@ -13,7 +13,6 @@ class YouTube(commands.Cog):
         self.bot = bot
         self.session = aiohttp.ClientSession()
 
-        
     async def _youtube_results(self, query: str):
         try:
             headers = {"user-agent": "nanobot/3.0"}
@@ -30,7 +29,6 @@ class YouTube(commands.Cog):
         except Exception as e:
             url_list = [f"Something went terribly wrong! [{e}]"]
         return url_list
-
 
     @commands.command(name="youtube", alias=["yt"])
     async def youtube(self, ctx, *, query: str):

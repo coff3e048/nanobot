@@ -22,8 +22,7 @@ class botManagement(commands.Cog):
             await ctx.reply(f'```{e}```')
         else:
             await ctx.author.send(file=discord.File(file))
-      
-    
+
     @commands.command(name='sysinfo')
     async def client_sysinfo(self, ctx: commands.Context, full: str):
         botavatar = self.bot.user.avatar.url
@@ -58,7 +57,6 @@ class botManagement(commands.Cog):
         )
         await ctx.reply(embed=embed)
 
-
     @commands.group(name='bmg')
     @commands.is_owner()
     async def bmg(self, ctx: commands.Context):
@@ -73,7 +71,7 @@ class botManagement(commands.Cog):
         except Exception as e:
             await ctx.reply(f'Error: ```{e}```')
 
-    @bmg.group(name='exit', aliases=['quit','bye','shutdown','stop'])
+    @bmg.group(name='exit', aliases=['quit', 'bye', 'shutdown', 'stop'])
     async def quit(self, ctx: commands.Context, timeset: int = None):
         if timeset != None:
             message = f'Stopping in {timeset} seconds.'

@@ -9,7 +9,6 @@ class CogManager(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-
     @commands.command(name="cog", aliases=["pkg"])
     @commands.is_owner()
     async def cog(self, ctx: commands.Context, subcommand: str = 'list', cog: str = None):

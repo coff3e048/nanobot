@@ -12,11 +12,9 @@ class Fun(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-
     @commands.command(name="roll")
     async def roll(self, ctx, first: int = 1, second: int = 100):
         await ctx.reply(f"{random.randint(first,second)} *({first} - **{second}**)*")
-
 
     @commands.command(name="choose")
     async def choose(self, ctx: commands.Context, *, text: str = None):
@@ -25,23 +23,21 @@ class Fun(commands.Cog):
         else:
             await ctx.reply(f"You've given me nothing to chose between.")
 
-    
     @commands.command(name="8ball")
     async def eightball(self, ctx: commands.Context):
         responses = [
             "It is certain",
-            "Outlook good", 
-            "You may rely on it", 
-            "Ask again later", 
-            "Concentrate and ask again", 
-            "Reply hazy, try again", 
-            "My reply is no", 
+            "Outlook good",
+            "You may rely on it",
+            "Ask again later",
+            "Concentrate and ask again",
+            "Reply hazy, try again",
+            "My reply is no",
             "My sources say no"
-            ]
+        ]
         msg = await ctx.reply(':8ball: *Thinking...*')
         await asyncio.sleep(1)
         await msg.edit(f':8ball: {random.choice(responses)}')
-
 
     @commands.command(name="ascii")
     @commands.cooldown(1, 1, commands.BucketType.user)
@@ -54,7 +50,6 @@ class Fun(commands.Cog):
             data = io.BytesIO(textart)
             await ctx.reply(file=discord.File(data, file))
 
-    
     @commands.command(name="duel", alias=["standoff"])
     @commands.cooldown(1, 4, commands.BucketType.user)
     async def duel(self, ctx, member1: discord.Member = None):
@@ -63,7 +58,7 @@ class Fun(commands.Cog):
             description="You shot yourself. Good job.",
             colour=discord.Colour.red()
         )
-        
+
         msgembed_ = discord.Embed(
             description=f"**{ctx.author.mention}** challenged **{member1.mention}** to a duel!",
         )
@@ -81,8 +76,9 @@ class Fun(commands.Cog):
             await asyncio.sleep(random.randint(3, 6))
             await msg.add_reaction('💥')
 
-            check = lambda reaction, user: user == ctx.author or member1 and str(reaction.emoji) in "💥"
-            
+            def check(reaction, user): return user == ctx.author or member1 and str(
+                reaction.emoji) in "💥"
+
             for reactor in msg.reactions:
                 reactors = await bot.wait_for("reaction_add", check=check, timeout=10)
                 for member in reactors:

@@ -2,10 +2,9 @@ FROM python:3.10-slim-bullseye
 
 
 RUN apt update && apt upgrade -y \
-RUN apt install -y curl git \
+	RUN apt install -y curl git \
 	gcc g++ \
 	ffmpeg
-
 
 #RUN useradd -ms /bin/bash nanobot
 

@@ -9,7 +9,6 @@ class ErrorHandler(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: commands.Context, error: commands.CommandError, response: str = None, reaction: str = None):
@@ -45,8 +44,8 @@ class ErrorHandler(commands.Cog):
             server = ctx.guild.name
         except:
             server = "Direct Message"
-        console.error(f'({server}) {ctx.author} used {ctx.command} and failed with: {error}')
-
+        console.error(
+            f'({server}) {ctx.author} used {ctx.command} and failed with: {error}')
 
     @commands.Cog.listener()
     async def on_command(self, ctx: commands.Context):
@@ -56,15 +55,13 @@ class ErrorHandler(commands.Cog):
             server = "Direct Message"
         console.botlog(f'({server}) {ctx.author} used {ctx.command}')
 
-
     @commands.Cog.listener()
     async def on_guild_join(self, ctx: commands.Context):
         console.botlog(f'Joined guild {server}')
-    
+
     @commands.Cog.listener()
     async def on_guild_remove(self, ctx: commands.Context):
         console.botlog(f'Left guild {server}')
-
 
 
 def setup(bot: commands.Bot):

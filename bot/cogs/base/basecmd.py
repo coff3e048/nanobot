@@ -14,12 +14,10 @@ class Base(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-
     @commands.command(name="invite")
     async def invite(self, ctx: commands.Context):
         """Invite the bot to your server!"""
         await ctx.author.send(f"Please note. This bot is in its very early stages of development. There will be bugs and possibly vulnerabilities.\n\nUse at your own risk\n{inviteurl}")
-
 
     @commands.command(name="source", aliases=["license"])
     async def license(self, ctx: commands.Context, dm: str = True):
@@ -41,13 +39,13 @@ class Base(commands.Cog):
         else:
             await ctx.reply(embed=embed)
 
-
     @commands.command(name="ping")
     @commands.cooldown(1, 2, commands.BucketType.guild)
     async def ping(self, ctx: commands.Context):
         """Get the bot's current websocket & API latency."""
         start_time = time.time()
-        listof_responses = ['your mom', 'my balls', 'deez nuts', 'aaaaaaaaa', 'steve balmer', 'developers', 'not discord', 'where is my son', 'fasdiniaosdfaisdf']
+        listof_responses = ['your mom', 'my balls', 'deez nuts', 'aaaaaaaaa', 'steve balmer',
+                            'developers', 'not discord', 'where is my son', 'fasdiniaosdfaisdf']
         msg = await ctx.send(f"`pinging {random.choice(listof_responses)}`")
         end_time = time.time()
         await msg.edit(embed=discord.Embed(
@@ -59,7 +57,6 @@ class Base(commands.Cog):
             name="Discord API", value=f"`{round((end_time - start_time) * 1000)}ms`", inline=True)
         )
 
-
     @commands.command(name="uptime", alises=["up"])
     async def uptime(self, ctx: commands.Context):
         """Get the bot's uptime"""
@@ -67,20 +64,19 @@ class Base(commands.Cog):
         givetime = time.strftime(
             "%Y-%m-%d %H:%M:%S",
             time.localtime(p.create_time())
-            )
+        )
         await ctx.reply(f"```Up since:\n{givetime}```")
-
 
     @commands.command(name="avatar", aliases=["pfp", "a"])
     async def get_avatar(self, ctx: commands.Context, member: discord.Member = None):
         if member is None:
             member = ctx.author
-        
-        avatarurl=member.avatar.url
+
+        avatarurl = member.avatar.url
         avatarEmbed = discord.Embed(
-          title=f"{member.name}'s avatar",
-          url=avatarurl,
-          color=member.color
+            title=f"{member.name}'s avatar",
+            url=avatarurl,
+            color=member.color
         )
         avatarEmbed.set_image(
             url=avatarurl
@@ -89,8 +85,7 @@ class Base(commands.Cog):
             await ctx.reply(embed=avatarEmbed)
         except:
             await ctx.author.send(embed=avatarEmbed)
-          
-          
+
     @commands.command(name="say", aliases=["hello"])
     @commands.is_owner()
     async def botsay(self, ctx, text: str = "Hello World!"):
@@ -99,7 +94,6 @@ class Base(commands.Cog):
             await ctx.send(text)
         except:
             await ctx.author.send(text)
-
 
 
 def setup(bot: commands.Bot):

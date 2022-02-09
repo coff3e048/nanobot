@@ -12,10 +12,9 @@ class Extended(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-
     @commands.group(name="cowsay")
     async def say(self, ctx: commands.Context, saytype: str = "cow", *, text: str = "Hello world!"):
-        cowoutput = cowsay.get_output_string(saytype,text)
+        cowoutput = cowsay.get_output_string(saytype, text)
         if saytype in cowsay.char_names:
             try:
                 await ctx.reply(f"```{cowoutput}```")

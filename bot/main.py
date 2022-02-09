@@ -1,20 +1,20 @@
+import psutil
+import platform
+import os
+import sys
+import logging
+import json
+import discord
+from rich import print
+from console import console
+from nextcord.ext import commands
+from env_var import env
+from art import text2art
+from aiohttp import request
+import asyncio
 import time
 # Log the amount of time it takes to start the bot
 start_time = time.time()
-import asyncio
-from aiohttp import request
-from art import text2art
-from env_var import env
-from nextcord.ext import commands
-from console import console
-from rich import print
-import discord
-import json
-import logging
-import sys
-import os
-import platform
-import psutil
 
 
 class botinfo():
@@ -28,7 +28,8 @@ class botinfo():
 console.system(f"System:\t {platform.uname()}")
 osplatform = platform.system()
 if osplatform != "Linux":
-    console.warn(f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK.")
+    console.warn(
+        f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK.")
 
 if env.activitytype == 'playing':
     activitytype = discord.ActivityType.playing
@@ -66,19 +67,20 @@ bot = commands.Bot(
 
 def cogservice(filepath):
     basic_cogs = ['errorhandler',
-    'botmgr',
-    'help',
-    'cogs.testing.admin
-    ]
-cogs.base.basecmd
-cogs.base.pkgmgr']
+                  'botmgr',
+                  'help',
+                  'cogs.testing.admin',
+                  'cogs.base.basecmd',
+                  'cogs.base.pkgmgr'
+                  ]
     if os.path.exists(filepath):
         console.log(f"Found {filepath}")
         with open(filepath, 'r') as service:
             cogsenabled = service.read().split()
     else:
         cogsenabled = basic_cogs
-        console.error(f"'{filepath}' wasn't found. Create the file with basic cogs? (Y/n)")
+        console.error(
+            f"'{filepath}' wasn't found. Create the file with basic cogs? (Y/n)")
         useri = input('>> ')
         if 'y' in useri:
             if not os.path.exists('config'):
@@ -97,20 +99,22 @@ cogs.base.pkgmgr']
             console.success(
                 f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
         except Exception as e:
-            sys.stdout.write("\033[F") 
+            sys.stdout.write("\033[F")
             console.error(f"loading cog {cogs} failed:\n({e})")
 
 
 async def botupdate(URL: str = "https://raw.githubusercontent.com/get-coff3e/nanobot/testing/bot/version.json"):
     async with request("GET", URL, headers={}) as response:
-            if response.status == 200:
-                data = await response.json(content_type=None)
-                newversion = data["botversion"]
-                if newversion != env.version:
-                    console.warn(f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{env.version}\n\t\t\tLatest found:\t\t{newversion}")
-            else:
-                print("Couldn't reach github")
-        
+        if response.status == 200:
+            data = await response.json(content_type=None)
+            newversion = data["botversion"]
+            if newversion != env.version:
+                console.warn(
+                    f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{env.version}\n\t\t\tLatest found:\t\t{newversion}")
+        else:
+            print("Couldn't reach github")
+
+
 @bot.event
 async def on_ready():
     console.success('Connection made!\n')
@@ -148,15 +152,14 @@ async def on_ready():
         console.botlog(f'Total joined guilds: {len(joined)}')
     else:
         console.botlog(f"Not joined into any guilds. Invite the bot using ...")
-        
 
     if intents.members:
         users = bot.users
 # Uncomment these lines below to print out all users the bot sees. Otherwise, it will only show you how many there are.
         #console.botlog(f"Found users:")
-        #try:
+        # try:
         #    print(users)
-        #except Exception as e:
+        # except Exception as e:
         #    console.error(e)
         console.botlog(f"Total unique users found: {len(users)}")
 

@@ -27,7 +27,7 @@ class ytdlcmd(commands.Cog):
             info_dict = ydl.extract_info(query, download=False)
             video_id = info_dict.get("id", None)
 
-        dlpath = "'.www/temp/%(id)s.%(ext)s'"
+        dlpath = "'.temp/%(id)s.%(ext)s'"
         usage = f"{env.prefix}ytdl 'https://youtube.com/...' video / audio (default: video)"
 
         if query == None:
@@ -71,14 +71,14 @@ class ytdlcmd(commands.Cog):
                     await ctx.reply(file=discord.File(f"temp/{vidfile}"))
                     deletemsg
                 except Exception as e:
-                    await ctx.reply(f"```{e}``` http://{env.webdomain}/temp/{vidfile}")
+                    await ctx.reply(f"```{e}```")
                     deletemsg
             else:
                 await msg.reply(f"Something went wrong. ```{exitcode}```")
-            # remove the file after a certain amount of time (in this case, 14400 seconds is 4 hours)    
+            # remove the file after a certain amount of time (in this case, 14400 seconds is 4 hours)
             await asyncio.sleep(14400)
             await aiof.os.remove(f"temp/{vidfile}")
-            
+
 
 def setup(bot: commands.Bot):
     bot.add_cog(ytdlcmd(bot))
