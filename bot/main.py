@@ -17,7 +17,7 @@ import platform
 import psutil
 
 
-console.system(f"System: {platform.uname()}")
+console.system(f"System:\t {platform.uname()}")
 osplatform = platform.system()
 if osplatform != "Linux":
     console.warn(f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK.")
@@ -155,4 +155,3 @@ if __name__ == "__main__":
         bot.run(env.token)
     except Exception as e:
         console.error(e)
-        exit()
