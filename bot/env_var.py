@@ -43,11 +43,18 @@ class env():
     # Setting bot token
     token = getenv('TOKEN')
     if token == None:
-        console.error(f"No token added, Exiting...")
-        exit()
+        console.error(f"No token in environment, Input your token")
+        token = input ('>> ')
 
     # Instance log level
-    loglevel = getenv('LOGLEVEL', 'BASIC')
+    # Log levels:
+    # 
+    # NONE
+    # BASIC
+    # MORE
+    # VERBOSE
+    loglevel = getenv('LOGLEVEL', 'NONE')
+
 
     # Default Discord status.
     activitytype = getenv('ACTIVITYTYPE', 'listening')
