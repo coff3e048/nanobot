@@ -2,6 +2,7 @@ import aiohttp
 import cowsay
 import re
 import discord
+import io
 from nextcord.ext import commands
 
 
@@ -14,11 +15,13 @@ class Extended(commands.Cog):
 
     @commands.group(name="cowsay")
     async def say(self, ctx: commands.Context, saytype: str = "cow", *, text: str = "Hello world!"):
+        cowoutput = cowsay.get_output_string(saytype,text)
         if saytype in cowsay.char_names:
             try:
-                await ctx.reply(f"```{cowsay.get_output_string(saytype,text)}```")
-            except Exception as e:
-                await ctx.reply(f"```{e}```")
+                await ctx.reply(f"```{cowoutput}```")
+            except:
+                data = io.BytesIO(cowoutput)
+                await ctx.reply(file=discord.File(data, f'cowsay-{ctx.author.id}.txt'))
         else:
             await ctx.reply(f"Valid characters: ```{cowsay.char_names}```")
 

@@ -46,30 +46,19 @@ class Fun(commands.Cog):
     @commands.command(name="ascii")
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def ascii(self, ctx: commands.Context, *, text: str = "Hello World!"):
-        # the way this works is insanely bad, dont keep this PLEASE.
         textart = text2art(text, 'random')
         file = f'ascii-{ctx.author.id}.txt'
-        if len(textart) > 1000:
-            if aiof.os.path.exists(file):
-                await aiof.os.remove(file)
-                pass
-            else:
-                f = await aiof.open(file, 'x')
-                f.write(str(textart))
-                f.close()
-
-                fr = await aiof.open(file, 'r')
-                await ctx.reply(file=discord.File(file))
-                f.close()
-                fr.close()
-                await aiof.os.remove(file)
-        else:
+        try:
             await ctx.reply(f"```{textart}```")
+        except:
+            data = io.BytesIO(textart)
+            await ctx.reply(file=discord.File(data, file))
 
-
+    
     @commands.command(name="duel", alias=["standoff"])
     @commands.cooldown(1, 4, commands.BucketType.user)
     async def duel(self, ctx, member1: discord.Member = None):
+        # This command is still useless. Fix it later
         msgembed_kys = discord.Embed(
             description="You shot yourself. Good job.",
             colour=discord.Colour.red()
