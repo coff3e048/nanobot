@@ -13,10 +13,9 @@ def envlogger(self, ctx: commands.Context):
     global author
     loglevel = env.loglevel
     # NONE Level
-    if loglevel < 0:
-        server = "Somewhere"
-        author = "Someone"
-        command = ctx.command
+    server = "Somewhere"
+    author = "Someone"
+    command = ctx.command
     # BASIC, command is already set. Only server is needed
     if loglevel > 0:
         try:
