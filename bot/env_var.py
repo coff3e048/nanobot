@@ -52,15 +52,18 @@ class env():
         console.error(
             f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
         token = str(input('>> '))
+
     # Instance log level
     # Log levels:
-    #
-    # NONE
-    # BASIC
-    # MORE
-    # VERBOSE
-    loglevel = getenv('LOGLEVEL', 'NONE')
-
+    # -------------------------------------------------------------------------
+    # NONE      (0)      (Server and author are hidden, command is logged)
+    # BASIC     (1)      (Server and command are shown)
+    # MORE      (2)      (Server, author, and command + contents are shown)
+    # VERBOSE   (3)      (Nextcord logging + everything that MORE has)
+    lvl = ['NONE', 'BASIC', 'EXTRA', 'VERBOSE']
+    loglevel = getenv('LOGLEVEL', 'BASIC')
+    loglevel = lvl.index(loglevel)
+    
     # Default Discord status.
     activitytype = getenv('ACTIVITYTYPE', 'listening')
     botactivity = getenv('STATUS', f'{prefix}')
