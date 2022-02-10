@@ -24,7 +24,7 @@ class botManagement(commands.Cog):
             await ctx.author.send(file=discord.File(file))
 
     @commands.command(name='sysinfo')
-    async def client_sysinfo(self, ctx: commands.Context, full: str):
+    async def client_sysinfo(self, ctx: commands.Context):
         botavatar = self.bot.user.avatar.url
         botuser = self.bot.user
         pyversion_imp = platform.python_implementation()
@@ -35,7 +35,7 @@ class botManagement(commands.Cog):
         # https://cog-creators.github.io/discord-embed-sandbox/
         embed = discord.Embed(
             title='Instance information',
-            color=self.bot.user.accent_color
+            color=discord.Color.purple()
         )
         embed.set_thumbnail(
             url=botavatar

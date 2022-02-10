@@ -26,7 +26,7 @@ class Base(commands.Cog):
             title=f"nanobot",
             url=f"https://github.com/pascal48/nanobot",
             description=f"nanobot is a small project of mine to practice Python as well as build a unique working Discord bot.\n\nI'm an amateur at Python, so contributions are 100% welcome!\n*(use the link in the title)*",
-            colour=discord.Colour.purple()
+            color=discord.Color.purple()
         )
         embed.set_thumbnail(
             url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-download.com%2Fwp-content%2Fuploads%2F2016%2F10%2FPython_logo_icon.png&f=1&nofb=1"
@@ -50,7 +50,7 @@ class Base(commands.Cog):
         end_time = time.time()
         await msg.edit(embed=discord.Embed(
             title="pong!",
-            colour=discord.Colour.purple())
+            color=discord.Color.purple())
             .add_field(
             name="Bot", value=f"`{round(self.bot.latency * 1000)}ms`", inline=True)
             .add_field(
@@ -71,12 +71,11 @@ class Base(commands.Cog):
     async def get_avatar(self, ctx: commands.Context, member: discord.Member = None):
         if member is None:
             member = ctx.author
-
         avatarurl = member.avatar.url
         avatarEmbed = discord.Embed(
             title=f"{member.name}'s avatar",
             url=avatarurl,
-            color=self.bot.user.accent_color
+            color=member.color
         )
         avatarEmbed.set_image(
             url=avatarurl

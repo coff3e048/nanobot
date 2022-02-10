@@ -1,6 +1,6 @@
 import discord
 from console import console
-from discord import Colour
+from discord import Color
 from nextcord.ext import commands
 
 
@@ -31,12 +31,12 @@ class ErrorHandler(commands.Cog):
         else:
             response = f"```{error}```"
 
-        if not response:
+        if response != None:
             await ctx.reply(embed=discord.Embed(
                 description=response,
-                colour=Colour.red()
+                color=Color.red()
             ))
-        elif not reaction:
+        elif reaction != None:
             await ctx.message.add_reaction(reaction)
 
         # Log the error in the terminal interface
