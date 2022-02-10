@@ -13,8 +13,7 @@ WORKDIR /nanobot
 
 COPY ./requirements.txt requirements.txt
 
-RUN pip install -r \
-	requirements.txt
+RUN pip install -r requirements.txt
 
 #USER nanobot
 ENTRYPOINT ["python", "bot/main.py"]
