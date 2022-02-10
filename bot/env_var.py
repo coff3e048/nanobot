@@ -6,7 +6,6 @@ from os import getenv
 
 # Valid environment variables:
 #
-# NEXTCORDLOG
 # BOTNAME
 # PREFIX
 # SOURCEPAGE
@@ -22,16 +21,7 @@ class env():
     # Cosmetic name of the bot instance
     updatemsg = getenv('UPDATEMSG', True)
 
-    nextcordlog = getenv('NEXTCORDLOG', False)
-    if nextcordlog:
-        logger = logging.getLogger('nextcord')
-        logger.setLevel(logging.DEBUG)
-        handler = logging.FileHandler(
-            filename='log/nextcord.log', encoding='utf-8', mode='w')
-        handler.setFormatter(logging.Formatter(
-            '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-        logger.addHandler(handler)
-
+    
     botname = getenv('BOTNAME', "nanobot")
 
     # Bot prefix
@@ -63,10 +53,10 @@ class env():
     lvl = ['NONE', 'BASIC', 'EXTRA', 'VERBOSE']
     loglevel = getenv('LOGLEVEL', 'BASIC')
     loglevel = lvl.index(loglevel)
-    
+
     # Default Discord status.
-    activitytype = getenv('ACTIVITYTYPE', 'listening')
-    botactivity = getenv('STATUS', f'{prefix}')
+    statustype = getenv('ACTIVITYTYPE', 'listening')
+    botstatus = getenv('STATUS', f'{prefix}')
 
     # Bot version
     _versionjson = json.load(open('bot/version.json'))
