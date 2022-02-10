@@ -23,6 +23,8 @@ class console():
             text = f'{fxtime} [[bold underline red]ERR![/]]:\t{text}'
         elif logtype == 'success':
             text = f'{fxtime} [[bold #32cd32]OK[/]]:\t{text}'
+        elif logtype == 'notice':
+            text = f'{fxtime} [[bold]NOTE[/]]:\t{text}'
         print(text)
 
     # These functions are used for convenience. It's not pretty, but it works?
@@ -47,3 +49,6 @@ class console():
 
     def success(text):
         console._print('success', text)
+
+    def notice(text):
+        console._print('notice', text)
