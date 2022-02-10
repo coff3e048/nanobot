@@ -1,33 +1,40 @@
-import asyncio
-from aiohttp import request
-from art import text2art
-from nextcord.ext import commands
-from console import console
-from rich import print
-from env_var import env
-import discord
-import json
-import logging
-import sys
-import os
-import platform
-import psutil
-import time
-# Log the amount of time it takes to start the bot
-start_time = time.time()
+print("Importing packages")
+try:
+    import time
+    # Log the amount of time it takes to start the bot
+    start_time = time.time()
+    import asyncio
+    from aiohttp import request
+    from art import text2art
+    from nextcord.ext import commands
+    from console import console
+    from rich import print, inspect
+    from env_var import env
+    import discord
+    import json
+    import logging
+    import sys
+    import os
+    import platform
+    import psutil
+except ImportError as e:
+    print(f"Broken or missing module: {e}")
+    exit()
 
 
 author = "coff3e"
 name = env.botname
 version = env.version
 sourcepage = env.sourcepage
+prefix = env.prefix
 
-
-console.system(f"System:\t {platform.uname()}")
+console.system(f"System:\t")
+inspect(platform.uname())
 osplatform = platform.system()
 if osplatform != "Linux":
     console.warn(
-        f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK.")
+        f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK."
+    )
 
 
 if env.activitytype == 'playing':
@@ -45,13 +52,13 @@ activity = discord.Activity(name=env.botactivity, type=activitytype)
 
 
 console.log(
-    f"Starting nanobot ({ name})"
+    f"Starting nanobot ({name})"
 )
 
 
 # Bot params + info
 bot = commands.Bot(
-    command_prefix=env.prefix,
+    command_prefix=prefix,
     case_insensitive=True,
     intents=intents,
     help_command=None,
@@ -65,6 +72,11 @@ bot = commands.Bot(
 )
 
 
+def returnln(returns: int = 1):
+    for x in range(returns):
+        ln = sys.stdout.write("\033[F")
+
+
 def cogservice(filepath):
     basic_cogs = ['errorhandler',
                   'botmgr',
@@ -73,8 +85,10 @@ def cogservice(filepath):
                   'cogs.base.basecmd',
                   'cogs.base.pkgmgr'
                   ]
+    console.log(f"Finding {filepath}")
+    returnln()
     if os.path.exists(filepath):
-        console.log(f"Found {filepath}")
+        console.success(f"Found {filepath}")
         with open(filepath, 'r') as service:
             cogsenabled = service.read().split()
     else:
@@ -92,15 +106,16 @@ def cogservice(filepath):
     for cogs in cogsenabled:
         try:
             cog_start_time = time.time()
-            console.log(f"loading cog {cogs}")
+            console.log(f"loading {cogs}")
             bot.load_extension(cogs)
             cog_end_time = time.time()
-            sys.stdout.write("\033[F")      # Clears previous line
+            # time.sleep(2)
+            returnln()
             console.success(
                 f"loaded {cogs} ({round((cog_end_time - cog_start_time) * 1000)}ms)")
         except Exception as e:
             sys.stdout.write("\033[F")
-            console.error(f"loading cog {cogs} failed:\n({e})")
+            console.error(f"loading {cogs} failed:\n({e})")
 
 
 async def botupdate(URL: str = "https://raw.githubusercontent.com/get-coff3e/nanobot/testing/bot/version.json"):
@@ -135,7 +150,7 @@ async def on_ready():
     print("\n----------------------------------------")
     print()
     print(f'[magenta]Logged in as [/][underline]{bot.user}[/] ({bot.user.id})')
-    print(f'[magenta]Prefix: {env.prefix}[/]')
+    print(f'[magenta]Prefix: {prefix}[/]')
     print()
     print("----------------------------------------\n")
 
@@ -143,11 +158,12 @@ async def on_ready():
     console.botlog("Joined guilds:")
     num = 0
     joined = bot.guilds
+    count = []
     if len(joined) > 1:
         for guilds in joined:
             try:
-                num = num + 1
-                print(f'\t\t\t{num} - {guilds}')
+                count.append(guilds)
+                print(f'\t\t\t\t{len(count)} - {guilds}')
             except Exception as e:
                 console.error(e)
         console.botlog(f'Total joined guilds: {len(joined)}')
@@ -178,7 +194,7 @@ async def on_ready():
 
 if __name__ == "__main__":
     # Loading TOKEN from .env
-    console.botlog("Attempting to connect to Discord API...")
+    console.botlog("Attempting to connect to Discord API")
     try:
         bot.run(env.token)
     except Exception as e:
