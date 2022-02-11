@@ -1,33 +1,34 @@
 # nanobot
-nanobot is a small experimental discord bot aimed at simplicity and modularity.
+nanobot is a Discord bot utilizing the [nextcord](https://github.com/nextcord/nextcord) python API.
 
-right now, nanobot has only been tested on Linux distributions. 
-compatability with other operating systems are likely, but not guaraunteed 
+nanobot's focus is on user customizability, modularity, and more importantly: keeping it nano (small)
+
+
+#### Disclaimer:
+nanobot is a personal project to practice Python and learn more about it in the process. I do not consider this a stable bot, but contributions and suggestions are very welcome. 
+
 
 # Running & Dependencies
 ## Running
-Running the bot is as simple as python main.py, but requires secret environment variables.
-
-Heres an example:
-
+Running the bot requires only Python 3 and ffmpeg (for youtube-dl command)
 ```
-TOKEN='bunchoflettersandwhatnot'
-PREFIX='!!'
-# Bot invite
-INVITE='https://discord.com/oauth2/***'
-# Source code page
-SOURCEPAGE='https://github.com/pascal48/nanobot'
+python3 bot/main.py
 ```
-Note that only TOKEN is really required, while the rest have built-in defaults.
 
-### Dependencies
-`python3 -m pip install -r requirements.txt`
-
-requirements.txt contains a list of dependencies that are required to run nanobot, just run this and you'll be ok :)
+The only required environment variable is the API Token as `TOKEN`. the rest have defaults and do not necessarily need to be set but you may check `.env.example` 
+Compatability outside of Linux is being built up, but it's not garaunteed.
 
 
-### Feature Goals
-- Create moderation commands (ban, mute, etc.)
-- Create guild-specific data (custom prefix, RSS, etc)
-- More "fun" commands
-- Slash commands?
+## Dependencies
+For manually installing dependencies, run 
+```
+pip install -r requirements.txt
+```
+in the directory where nanobot is located
+
+You may need to install gcc and g++ for installing nextcord.
+
+
+## nanobot is in a very early stage, so these dependencies will change very often.
+
+
