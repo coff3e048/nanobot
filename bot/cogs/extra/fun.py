@@ -52,6 +52,44 @@ class Fun(commands.Cog):
             data = io.BytesIO(textart)
             await ctx.reply(file=discord.File(data, file))
 
+    @commands.command(name="battle")
+    @commands.cooldown(1, 1, commands.BucketType.user)
+    async def auto_battle(self, ctx: commands.Context, member: discord.Member = None):
+        if not member:
+            await ctx.reply("Suicide is not an option!")
+        else:
+            embed = discord.Embed(
+            description=f"A challenge has been called!\n\n{ctx.author.mention} and {member.mention} are fighting to the death!"
+            )
+            msg = await ctx.reply(embed=embed)
+            await asyncio.sleep(2)
+            pnts_author = 0
+            pnts_member = 0
+            for x in range(5):
+                user = [ctx.author.mention, member.mention]
+                random.shuffle(user)
+                moves = [
+                    f'{user[0]} punched {user[1]} in the face!',
+                    f'{user[0]} kicked {user[1]} in the legs!',
+                    f'{user[0]} slapped {user[1]} in the face!',
+                    f'{user[0]} shot {user[1]} with a BB gun!',
+                    f'{user[0]} hit {user[1]} in the head with a toaster!'
+                ]
+                if user[0] == ctx.author.mention:
+                    pnts_author = pnts_author + 1
+                else:
+                    pnts_member = pnts_member + 1
+                await msg.edit(embed=discord.Embed(
+                    description=f'{random.choice(moves)}\n'
+                    ).set_footer(text=f"{ctx.author}: {pnts_author} points | {member}: {pnts_member} points"))
+                await asyncio.sleep(2)
+
+            if pnts_author == pnts_member:
+                await msg.edit(embed=discord.Embed(description="It's a tie!"))
+            elif pnts_author > pnts_member:
+                await msg.edit(embed=discord.Embed(description=f"{ctx.author.mention} wins!"))
+            elif pnts_author < pnts_member:
+                await msg.edit(embed=discord.Embed(description=f"{member.mention} wins!"))
 
 
 def setup(bot: commands.Bot):

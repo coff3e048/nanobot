@@ -18,10 +18,10 @@ from os import getenv
 
 
 class env():
-    # Cosmetic name of the bot instance
+    
     updatemsg = getenv('UPDATEMSG', True)
 
-    
+    # Cosmetic name of the bot instance
     botname = getenv('BOTNAME', "nanobot")
 
     # Bot prefix
@@ -34,14 +34,17 @@ class env():
     userid = getenv('BOTID')
 
     # Default bot invite (could be another link)
-    #botinvite = getenv('INVITE', f"https://discord.com/oauth2/{bot.userid}&scope=bot")
+    #botinvite = getenv('INVITE', "f"https://discord.com/oauth2/{bot.userid}&scope=bot)
 
     # Setting bot token
     token = getenv('TOKEN')
     if not token:
         console.error(
             f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
-        token = str(input('>> '))
+        try:
+            token = str(input('>> '))
+        except KeyboardInterrupt:
+            pass
 
     # Instance log level
     # Log levels:
@@ -61,3 +64,4 @@ class env():
     # Bot version
     _versionjson = json.load(open('bot/version.json'))
     version = _versionjson['botversion']
+    ver_branch = _versionjson['gitbranch']

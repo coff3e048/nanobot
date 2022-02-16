@@ -60,7 +60,7 @@ class botManagement(commands.Cog):
     @commands.group(name='bmg')
     @commands.is_owner()
     async def bmg(self, ctx: commands.Context):
-        if ctx.invoked_subcommand == None:
+        if not ctx.invoked_subcommand:
             await ctx.reply('No invoked subcommand')
 
     @bmg.group()

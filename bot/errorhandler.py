@@ -86,10 +86,12 @@ class ErrorHandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, ctx: commands.Context):
+        envlogger(self, ctx)
         console.botlog(f'Joined guild {server}')
 
     @commands.Cog.listener()
     async def on_guild_remove(self, ctx: commands.Context):
+        envlogger(self, ctx)
         console.botlog(f'Left guild {server}')
 
 

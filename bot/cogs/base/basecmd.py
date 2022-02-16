@@ -69,7 +69,7 @@ class Base(commands.Cog):
 
     @commands.command(name="avatar", aliases=["pfp", "a"])
     async def get_avatar(self, ctx: commands.Context, member: discord.Member = None):
-        if member is None:
+        if not member:
             member = ctx.author
         avatarurl = member.avatar.url
         avatarEmbed = discord.Embed(

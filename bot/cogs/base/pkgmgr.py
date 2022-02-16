@@ -1,4 +1,5 @@
 import os
+#import aiohttp
 from os import getenv
 import discord
 from nextcord.ext import commands
@@ -9,37 +10,69 @@ class CogManager(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="cog", aliases=["pkg"])
+    #async def get_cog(self, ctx):
+
+
+    @commands.group(name="cog", aliases=["pkg", "c"])
     @commands.is_owner()
     async def cog(self, ctx: commands.Context, subcommand: str = 'list', cog: str = None):
-        subcommands = ['list', 'load', 'unload', 'reload']
-        if subcommand in subcommands:
-            if subcommand == 'list':
-                coglist = str(self.bot.cogs).replace('[', '').replace(']', '').replace(
-                    "'", "").replace(",", "\n").replace(" ", "")
-                try:
-                    await ctx.reply(f"```{coglist}```")
-                except Exception as e:
-                    await ctx.reply(f"{e}")
-            else:
-                split_text = cog.split()
-                try:
-                    for cogs in split_text:
-                        if subcommand == 'load':
-                            self.bot.load_extension(cogs)
-                        elif subcommand == 'unload':
-                            self.bot.unload_extension(cogs)
-                        elif subcommand == 'reload':
-                            self.bot.reload_extension(cogs)
-                        elif subcommand == 'download':
-                            await ctx.reply('Coming soon!')
-                    await ctx.reply(f"```{split_text}``` {subcommand}ed.")
-                except Exception as e:
-                    await ctx.reply(f"Cog {subcommand} failed.\n```{e}```")
-                    console.error(f"Failed loading {cogs} ({e})")
-        else:
-            await ctx.reply(f"`{subcommand}`is not a valid subcommand.")
+        if not ctx.invoked_subcommand:
+            await ctx.reply(f"{subcommand} is not a valid command.")
+        coglist = []
+        for cogs in self.bot.cogs:
+            coglist.append(cogs)
+        try:
+            await ctx.reply(f"```{coglist}```")
+        except Exception as e:
+            await ctx.reply(f"{e}")
 
+    @cog.group(name="list")
+    async def list(self, ctx: commands.Context):
+        coglist = []
+        for cogs in self.bot.cogs:
+            cogslist.append(cogs)
+        try:
+            await ctx.reply(f"```{coglist}```")
+        except Exception as e:
+            await ctx.reply(f"{e}")
+
+    @cog.group(name="load")
+    async def load(self, ctx: commands.Context, *, cogs: str = None):
+        split_text = cogs.split()
+        for cogs in split_text:
+            try:
+                self.bot.load_extension(cogs)
+                await ctx.reply(f"{cogs} loaded.")
+            except Exception as e:
+                await ctx.reply(e)
+            
+    @cog.group(name="unload")
+    async def unload(self, ctx: commands.Context, *, cogs: str = None):
+        split_text = cogs.split()
+        for cogs in split_text:
+            try:
+                self.bot.unload_extension(cogs)
+                await ctx.reply(f"{cogs} unloaded.")
+            except Exception as e:
+                await ctx.reply(e)
+
+    @cog.group(name="reload")
+    async def reload(self, ctx: commands.Context, *, cogs: str = None):
+        split_text = cogs.split()
+        for cogs in split_text:
+            try:
+                self.bot.reload_extension(cogs)
+                await ctx.reply(f"{cogs} reloaded.")
+            except:
+                self.bot.load_extension(cogs)
+
+    @cog.group(name="install")
+    async def install(self, ctx: commands.Context, repo: str = None, *, cogs: str = None):
+        await ctx.reply("This functionality will come soon!")
+
+    @cog.group(name="uninstall")
+    async def uninstall(self, ctx: commands.Context, *, cogs: str = None):
+        await ctx.reply("This functionality will come soon!")
 
 def setup(bot: commands.Bot):
     bot.add_cog(CogManager(bot))

@@ -3,6 +3,5 @@ botmgr
 help
 cogs.testing.admin
 cogs.base.basecmd
+cogs.base.pkgmgr
 cogs.extra.fun
-cogs.extra.extended
-cogs.extra.media

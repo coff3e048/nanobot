@@ -1,25 +1,21 @@
 print("Importing modules")
-try:
-    import time
-    # Log the amount of time it takes to start the bot
-    start_time = time.time()
-    import asyncio
-    from aiohttp import request
-    from art import text2art
-    from nextcord.ext import commands
-    from console import console
-    from rich import print, inspect
-    from env_var import env
-    import discord
-    import json
-    import logging
-    import sys
-    import os
-    import platform
-    import psutil
-except ImportError as e:
-    print(f"Broken or missing module: {e}")
-    exit()
+import time
+# Log the amount of time it takes to start the bot
+start_time = time.time()
+import asyncio
+from aiohttp import request
+from art import text2art
+from nextcord.ext import commands
+from console import console
+from rich import print, inspect
+from env_var import env
+import discord
+import json
+import logging
+import sys
+import os
+import platform
+import psutil
 
 
 author = "coff3e"
@@ -27,6 +23,8 @@ name = env.botname
 version = env.version
 sourcepage = env.sourcepage
 prefix = env.prefix
+statustype = env.statustype
+ver_branch = env.ver_branch
 
 
 # OS info + check
@@ -40,16 +38,16 @@ if osplatform != "Linux":
 
 
 # Bot profile status type (playing..., watching..., listening...)
-if env.statustype == 'playing':
+if statustype == 'playing':
     statustype = discord.ActivityType.playing
-elif env.statustype == 'watching':
+elif statustype == 'watching':
     statustype = discord.ActivityType.watching
-elif env.statustype == 'listening':
+elif statustype == 'listening':
     statustype = discord.ActivityType.listening
 
-# Try intents, if it's not enabled on the dev page then complain.
-intents = discord.Intents.default()
+# Try intents, if it's not enabled on the dev page then complain. I hope thats how this works, anyway.
 try:
+    intents = discord.Intents.default()
     intents.members = True
     intents.guilds = True
 except Exception as e:
@@ -80,8 +78,8 @@ bot = commands.Bot(
 # Convenience function, find a safer way than using sys
 def returnln(returns=1):
     for x in range(returns):
-        sys.stdout.write("\033[F")
-        sys.stdout.write("\033[K")
+        sys.stdout.write("\033[F")  # Return back to previous line
+        sys.stdout.write("\033[K")  # Flush the line
 
 
 def timed(_end_time, _start_time, x):
@@ -91,13 +89,6 @@ def timed(_end_time, _start_time, x):
 # Load bot cogs in bot/cogs
 def cogservice(filepath):
     # These cogs are fallback cogs, in the event that no service file is present the bot will instead load these.
-    basic_cogs = ['errorhandler',
-                  'botmgr',
-                  'help',
-                  'cogs.testing.admin',
-                  'cogs.base.basecmd',
-                  'cogs.base.pkgmgr'
-                  ]
     console.log(f"Finding {filepath}")
     returnln()
     if os.path.exists(filepath):    # filepath is defined in the function call
@@ -106,17 +97,24 @@ def cogservice(filepath):
             cogsenabled = service.read().split()
     else:
         # Ask if the user wants to create a service file with the basic fallback cogs
-        cogsenabled = basic_cogs
         console.error(
             f"'{filepath}' wasn't found. Create the file with basic cogs? (Y/n)")
         useri = input('>> ')
         if 'y' in useri:
+            basic_cogs = [
+                  'errorhandler',
+                  'botmgr',
+                  'help',
+                  'cogs.testing.admin',
+                  'cogs.base.basecmd',
+                  'cogs.base.pkgmgr'
+                  ]
+            cogsenabled = basic_cogs
             if not os.path.exists('config'):
                 os.mkdir('config')
-            f = open('config/service.txt', 'w')
-            for cogs in cogsenabled:
-                f.write(f"{cogs}\n")
-    service.close()
+                with open('config/service.txt', 'w') as f:
+                    for cogs in cogsenabled:
+                        f.write(f"{cogs}\n")
     for cogs in cogsenabled:
         # Start loading cogs
         try:
@@ -133,7 +131,7 @@ def cogservice(filepath):
                 f"loading {cogs} failed:\n({e} (took {timed(cog_end_time,cog_start_time,1000)}ms)")
 
 
-async def botupdate(URL: str = "https://raw.githubusercontent.com/get-coff3e/nanobot/testing/bot/version.json"):
+async def botupdate(URL: str = f"https://raw.githubusercontent.com/get-coff3e/nanobot/{ver_branch}/bot/version.json"):
     async with request("GET", URL, headers={}) as response:
         if env.updatemsg:
             if response.status == 200:
@@ -141,15 +139,16 @@ async def botupdate(URL: str = "https://raw.githubusercontent.com/get-coff3e/nan
                 newversion = data["botversion"]
                 if newversion != version:
                     console.notice(
-                        f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tInstance Version:\t{ version}\n\t\t\tLatest found:\t\t{newversion}\n\t\t\tIf you would like to disable this message, set [bold orange]UPDATEMSG[/] to False in your environment")
+                        f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tCurrent Instance:\t{version}\n\t\t\tLatest Update:\t\t{newversion}\n\t\t\tBranch: {ver_branch}\n\t\t\tIf you would like to disable this functionality, set [bold orange]UPDATEMSG[/] to False in your environment")
             else:
                 print(
-                    f"Couldn't reach github to check for updates. HTTP Response: {response.status}")
+                    f"Problem reaching GitHub. HTTP Response: {response.status}")
 
 
 @bot.event
 async def on_ready():
     connect_end_time = time.time()
+    returnln()
     console.success(
         f'Connected to Discord API! (took {timed(connect_end_time,connect_start_time,1000)}ms)\n')
     # nanobot startup ascii art
@@ -157,19 +156,18 @@ async def on_ready():
         text2art(name, 'random')
     )
 
+    print(f"[white]\n\tVersion: {version}[/]")
+    print(f"[yellow]\tBranch[/]: [white]{ver_branch}[/]")
     if "DEV" in version:
-        print(f"[red]\nVersion: {version}[/]")
-        print(f"[bold red]! ! !   DEV VERSION   ! ! ![/]\n")
-        print(f"[red]Report bugs to: {sourcepage}[/]")
-    else:
-        print(f"[white]\nVersion: {version}[/]")
+        print(f"[bold red]\t! ! !   UNSTABLE DEV VERSION   ! ! ![/]")
+        print(f"[bold underline red]\tNOT RECOMMENDED FOR PRODUCTION USE[/]")
+        print(f"[red]\tReport any bugs to: {sourcepage}[/]")
 
 # Discord API User info + prefix
     print("\n\t----------------------------------------")
-    print()
     print(f'\t[magenta]Logged in as [/][underline]{bot.user}[/] ({bot.user.id})')
-    print(f'\t[magenta]Prefix: {prefix}[/]')
-    print()
+    print(f"\t[magenta]Generic Invite[/]: https://discord.com/oauth2/{bot.user.id}&scope=bot")
+    print(f'\t[magenta]Prefix[/]: {prefix}')
     print("\t----------------------------------------\n")
 
 # printing list of guilds the bot is joined into
@@ -180,12 +178,12 @@ async def on_ready():
         for guilds in joined:
             try:
                 count.append(guilds)
-                print(f'\t\t\t\t{len(count)} -\t{guilds}')
+                print(f'\t\t\t{len(count)} -\t{guilds}')
             except Exception as e:
                 console.error(e)
         console.botlog(f'Total joined guilds: {len(joined)}')
     else:
-        console.botlog(f"Not joined into any guilds. Invite the bot using ...")
+        console.botlog(f"Not joined into any guilds. Invite the bot using: https://discord.com/oauth2/{bot.user.id}&scope=bot")
 
     if intents.members:
         users = bot.users
@@ -198,7 +196,7 @@ async def on_ready():
         #        print(f'\t\t\t\t{len(count)} -\t{member}')
         #   except Exception as e:
         #       console.error(e)
-        console.botlog(f"Total unique users found: {len(users)}")
+        console.botlog(f"Total unique users: {len(users)}")
 
 # load cogs from cogservice function
     cogservice('config/service.txt')
