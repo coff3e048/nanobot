@@ -54,7 +54,7 @@ class env():
     # MORE      (2)      (Server, author, and command + contents are shown)
     # VERBOSE   (3)      (Nextcord logging + everything that MORE has)
     lvl = ['NONE', 'BASIC', 'EXTRA', 'VERBOSE']
-    loglevel = getenv('LOGLEVEL', 'BASIC')
+    loglevel = getenv('LOGLEVEL', 'EXTRA')
     loglevel = lvl.index(loglevel)
 
     # Default Discord status.
