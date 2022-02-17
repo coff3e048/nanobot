@@ -26,14 +26,16 @@ class Fun(commands.Cog):
 
     @commands.command(name="8ball")
     async def eightball(self, ctx: commands.Context):
-        responses = ["As I see it, yes.", "Ask again later.", "Better not tell you now.",               "Cannot predict now.", "Concentrate and ask again.",
-                    "Don’t count on it.", "It is certain.", "It is decidedly so.", "Most likely.", "My reply is no.", "My sources say no.",
-                    "Outlook not so good.", "Outlook good.", "Reply hazy, try again.", "Signs point to yes.", "Very doubtful.", "Without a doubt.",
-                    "Yes.", "Yes – definitely.", "You may rely on it."]
+        responses = ["As I see it, yes.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.",
+                     "Don’t count on it.", "It is certain.", "It is decidedly so.", "Most likely.", "My reply is no.", "My sources say no.",
+                     "Outlook not so good.", "Outlook good.", "Reply hazy, try again.", "Signs point to yes.", "Very doubtful.", "Without a doubt.",
+                     "Yes.", "Yes – definitely.", "You may rely on it."]
         msg = await ctx.reply(':8ball: *Thinking*')
-        choice = numpy.random.choice(responses, 1, p=[0.15, 0.15, 0.15, 0.05, 0.05, 0.15, 0.15, 0.15])
+        choice = random.choice(responses)
         await asyncio.sleep(1)
-        await msg.edit(':8ball: '+"...".join(choice))
+        # i want to keep this cause its really funny
+        #await msg.edit(':8ball: '+"...".join(choice))
+        await msg.edit(f':8ball: {choice}')
 
     @commands.command(name="ascii")
     @commands.cooldown(1, 1, commands.BucketType.user)
@@ -49,11 +51,11 @@ class Fun(commands.Cog):
     @commands.command(name="battle")
     @commands.cooldown(1, 1, commands.BucketType.user)
     async def auto_battle(self, ctx: commands.Context, member: discord.Member = None):
-        if not member:
+        if not member or member == ctx.author:
             await ctx.reply("Suicide is not an option!")
         else:
             embed = discord.Embed(
-            description=f"A challenge has been called!\n\n{ctx.author.mention} and {member.mention} are fighting to the death!"
+                description=f"A challenge has been called!\n\n{ctx.author.mention} and {member.mention} are fighting to the death!"
             )
             msg = await ctx.reply(embed=embed)
             await asyncio.sleep(2)
@@ -75,7 +77,7 @@ class Fun(commands.Cog):
                     pnts_member = pnts_member + 1
                 await msg.edit(embed=discord.Embed(
                     description=f'{random.choice(moves)}\n'
-                    ).set_footer(text=f"{ctx.author}: {pnts_author} points | {member}: {pnts_member} points"))
+                ).set_footer(text=f"{ctx.author}: {pnts_author} points | {member}: {pnts_member} points"))
                 await asyncio.sleep(2)
 
             if pnts_author == pnts_member:
