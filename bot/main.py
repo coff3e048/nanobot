@@ -153,11 +153,11 @@ async def on_ready():
         f'Connected to Discord API! (took {timed(connect_end_time,connect_start_time,1000)}ms)\n')
     # nanobot startup ascii art
     console.nanostyle(
-        text2art(name, 'random')
+        text2art(name, 'rnd-small')
     )
 
-    print(f"[white]\n\tVersion: {version}[/]")
-    print(f"[yellow]\tBranch[/]: [white]{ver_branch}[/]")
+    print(f"\n\tVersion: {version}")
+    print(f"\tBranch: {ver_branch}")
     if "DEV" in version:
         print(f"[bold red]\t! ! !   UNSTABLE DEV VERSION   ! ! ![/]")
         print(f"[bold underline red]\tNOT RECOMMENDED FOR PRODUCTION USE[/]")
