@@ -108,14 +108,6 @@ class mediastuff(commands.Cog):
             if os.path.exists(f"temp/{vidfile}"):
                 await aiof.os.remove(f"temp/{vidfile}")
 
-    @commands.command(name="animalfact")
-    async def animal_fact(self, ctx: commands.Context, URL="https://some-random-api.ml/animal/"):
-        async with request("GET", URL, headers={}) as response:
-            if response.status == 200:
-                data = await response.json()
-                await ctx.reply(data["fact"])
-            else:
-                await ctx.reply(f"API returned a {response.status} status")
 
 
 def setup(bot: commands.Bot):
