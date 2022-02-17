@@ -28,6 +28,7 @@ def envlogger(self, ctx: commands.Context):
         command = ctx.command
     # This one could be dangerous, as it also writes a log onto the filesystem.
     if loglevel >= 3:
+        command = ctx.message.content
         if not os.path.exists('log'):
             os.mkdir('log')
         logger = logging.getLogger('nextcord')
