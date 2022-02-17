@@ -56,7 +56,7 @@ class ErrorHandler(commands.Cog):
             response = f"You do not have the required permissions to run this command.\n```{error}```"
             reaction = '🚫'
         elif isinstance(error, commands.UserInputError):
-            response = f"User input error. \n```{error}```"
+            response = f"```{error}```"
             reaction = '❕'
         elif isinstance(error, commands.MissingRequiredArgument):
             response = f"Missing a required argument: {error.param}\n```{error}```"
@@ -70,7 +70,7 @@ class ErrorHandler(commands.Cog):
             await ctx.reply(embed=discord.Embed(
                 description=response,
                 color=Color.red()
-            ))
+            ), delete_after=30)
         elif reaction != None:
             await ctx.message.add_reaction(reaction)
 
