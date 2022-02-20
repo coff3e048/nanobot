@@ -1,0 +1,14 @@
+{
+  "cogs": [
+    "errorhandler",
+    "botmgr",
+    "help",
+    "cogs.testing.admin",
+    "cogs.base.basecmd",
+    "cogs.base.pkgmgr",
+    "cogs.extra.extended",
+    "cogs.extra.fun",
+    "cogs.extra.bible",
+    "cogs.extra.media"
+  ]
+}
