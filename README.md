@@ -16,6 +16,7 @@ python3 bot/main.py
 ```
 
 The only required environment variable is the API Token as `TOKEN`. the rest have defaults and do not necessarily need to be set but you may check `.env.example` 
+
 Compatability outside of Linux is being built up, but it's not garaunteed.
 
 
