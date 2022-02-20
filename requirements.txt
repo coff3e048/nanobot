@@ -7,4 +7,3 @@ rich
 yt_dlp
 aiofiles
 aiohttp[speedups]
-discord-ui
