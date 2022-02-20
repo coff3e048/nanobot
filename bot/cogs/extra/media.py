@@ -49,35 +49,42 @@ class mediastuff(commands.Cog):
         # Example video(s): http://www.youtube.com/watch?v=BaW_jenozKc
         #                   http://www.youtube.com/watch?v=jNQXAC9IVRw
         #                   https://youtu.be/khK_afMwAdA
-        #
-        # Btw, this script is incredibly garbage and doesn't work very well. When a user tries to use [p]ytdl, the whole bot will stop and wait until the download / upload is finished.
-
-        with yt_dlp.YoutubeDL() as ydl:
-            info_dict = ydl.extract_info(query, download=False)
-            video_id = info_dict.get("id", None)
 
         dlpath = "'temp/%(id)s.%(ext)s'"
         usage = f"{env.prefix}ytdl 'https://youtube.com/...' video / audio (default: video)"
         if not query:
             await ctx.reply(f"No YouTube URL found.\n```{usage}```")
         else:
-            if convert == 'video':
-                media_format = 'webm'
+            # User download format options, 'video' is the default.
+            # Video formats:
+            video_cv = ['video', 'webm']
+            audio_cv = ['audio', 'opus']
+            if convert == video_cv[0] or convert == 'mp4':
+                media_format = 'mp4'
                 opts = f'--recode-video {media_format}'
-            elif convert == 'audio':
+            elif convert in video_cv:
+                media_format = convert
+                opts = f'--recode-video {media_format}'
+            # Audio formats:
+            elif convert == audio_cv[0] or convert == 'mp3':
                 media_format = 'mp3'
                 opts = f'-x --audio-format {media_format}'
-            elif convert == 'opus':
-                media_format = 'opus'
+            elif convert in audio_cv:
+                media_format = convert
                 opts = f'-x --audio-format {media_format}'
             else:
                 await ctx.reply(f"Invalid usage.\n```{usage}```")
 
+            msg = await ctx.reply(f"Downloading <{query}>...")
             if not os.path.exists('temp'):
                 os.mkdir('temp')
 
-            # a pretty unsafe way of doing it, but yt_dlp doesn't support async io
-            # i cant think of a better way to do this.
+            # Extract video info for the ID.
+            with yt_dlp.YoutubeDL() as ydl:
+                info_dict = ydl.extract_info(query, download=False)
+                video_id = info_dict.get("id", None)
+            # Run yt-dlp to download the video & convert if needed
+            # a pretty unsafe way of doing it, but yt_dlp doesn't support asyncio (and i also dont know async multiprocessing)
             try:
                 subprocesspipe = asyncio.subprocess.PIPE
                 child = await asyncio.create_subprocess_shell(
@@ -85,29 +92,25 @@ class mediastuff(commands.Cog):
                     stderr=subprocesspipe,
                     stdout=subprocesspipe
                 )
-                msg = await ctx.reply(f"Downloading <{query}>...")
                 stdout, stderr = await child.communicate()
             except Exception as e:
                 await msg.edit(f"```{e}```")
-
+            # Grab the exit code to know if yt-dlp succeeded or not
             exitcode = child.returncode
             vidfile = f"{video_id}.{media_format}"
-            deletemsg = await msg.delete()
-
-            if exitcode == 0:
-                try:
-                    await ctx.reply(file=discord.File(f"temp/{vidfile}"))
-                    deletemsg
-                except Exception as e:
-                    await ctx.reply(f"```{e}```")
-                    deletemsg
+            tmplocation = f"temp/{vidfile}"
+            await msg.delete()          # Delete original download msg
+            # If yt-dlp ran successfully and the file exists, upload it.
+            try:
+                if exitcode == 0 and os.path.exists(tmplocation):
+                    await ctx.reply(file=discord.File(tmplocation))
+                    await asyncio.sleep(14400)
+                    await aiofiles.os.remove(tmplocation)
+            except:
+                await msg.reply(f"Something went wrong. The video download likely failed and no file was found to upload. ```{exitcode}```")
             else:
-                await msg.reply(f"Something went wrong. ```{exitcode}```")
+                await msg.reply(f"Something has gone abnormally wrong, and I don't know the error.")
             # remove the file after a certain amount of time (in this case, 14400 seconds is 4 hours)
-            await asyncio.sleep(14400)
-            if os.path.exists(f"temp/{vidfile}"):
-                await aiof.os.remove(f"temp/{vidfile}")
-
 
 
 def setup(bot: commands.Bot):
