@@ -15,16 +15,16 @@ class Base(commands.Cog):
         self.bot = bot
 
     @commands.command(name="invite")
-    async def invite(self, ctx: commands.Context):
+    async def invite(self, ctx):
         """Invite the bot to your server!"""
         await ctx.author.send(f"Please note. This bot is in its very early stages of development. There will be bugs and possibly vulnerabilities.\n\nUse at your own risk\n{inviteurl}")
 
     @commands.command(name="source", aliases=["license"])
-    async def license(self, ctx: commands.Context, dm: str = True):
+    async def license(self, ctx, dm: str = True):
         """Bot license and source code page"""
         embed = discord.Embed(
             title=f"nanobot",
-            url=f"https://github.com/pascal48/nanobot",
+            url=f"https://github.com/get-coff3e/nanobot",
             description=f"nanobot is a small project of mine to practice Python as well as build a unique working Discord bot.\n\nI'm an amateur at Python, so contributions are 100% welcome!\n*(use the link in the title)*",
             color=discord.Color.purple()
         )
@@ -32,7 +32,7 @@ class Base(commands.Cog):
             url="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Flogos-download.com%2Fwp-content%2Fuploads%2F2016%2F10%2FPython_logo_icon.png&f=1&nofb=1"
         )
         embed.set_footer(
-            text="nanobot's source code is publicly licensed under the GNU Affero General Public License (AGPL v3)!"
+            text="nanobot's source code is publicly licensed under MIT!"
         )
         if dm:
             await ctx.author.send(embed=embed)
@@ -41,11 +41,11 @@ class Base(commands.Cog):
 
     @commands.command(name="ping")
     @commands.cooldown(1, 2, commands.BucketType.guild)
-    async def ping(self, ctx: commands.Context):
+    async def ping(self, ctx):
         """Get the bot's current websocket & API latency."""
-        start_time = time.time()
         listof_responses = ['your mom', 'my balls', 'deez nuts', 'aaaaaaaaa', 'steve balmer',
                             'developers', 'not discord', 'where is my son', 'fasdiniaosdfaisdf']
+        start_time = time.time()
         msg = await ctx.send(f"`pinging {random.choice(listof_responses)}`")
         end_time = time.time()
         await msg.edit(embed=discord.Embed(
@@ -58,7 +58,7 @@ class Base(commands.Cog):
         )
 
     @commands.command(name="uptime", alises=["up"])
-    async def uptime(self, ctx: commands.Context):
+    async def uptime(self, ctx):
         """Get the bot's uptime"""
         p = psutil.Process(os.getpid())
         givetime = time.strftime(
@@ -68,7 +68,7 @@ class Base(commands.Cog):
         await ctx.reply(f"```Up since:\n{givetime}```")
 
     @commands.command(name="avatar", aliases=["pfp", "a"])
-    async def get_avatar(self, ctx: commands.Context, member: discord.Member = None):
+    async def get_avatar(self, ctx, member: discord.Member = None):
         if not member:
             member = ctx.author
         avatarurl = member.avatar.url
@@ -87,7 +87,7 @@ class Base(commands.Cog):
 
     @commands.command(name="say", aliases=["hello"])
     @commands.is_owner()
-    async def botsay(self, ctx, text: str = "Hello World!"):
+    async def botsay(self, ctx, *, text: str = "Hello World!"):
         """Scream to the world!"""
         try:
             await ctx.send(text)
