@@ -1,7 +1,0 @@
-errorhandler
-botmgr
-help
-cogs.testing.admin
-cogs.base.basecmd
-cogs.base.pkgmgr
-cogs.extra.fun
