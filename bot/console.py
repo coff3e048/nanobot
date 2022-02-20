@@ -9,19 +9,19 @@ def time_now():
 
 
 class console():
-    # These functions are used for convenience. It's not pretty, but it works?
-    nanostyle = lambda text : print(f'[magenta]{text}[/magenta]')
 
-    log = lambda text : print(f'{time_now()} [[dim]INFO[/]]:\t{text}')
+    def nanostyle(text): print(f'[magenta]{text}[/magenta]')
 
-    botlog = lambda text : print(f'{time_now()} [[blue]DISCORD[/]]:\t{text}')
+    def log(text): print(f'{time_now()} [[dim]INFO[/]]:\t{text}')
 
-    system = lambda text : print(f'{time_now()} {text}')
+    def botlog(text): print(f'{time_now()} [[blue]DISCORD[/]]:\t{text}')
 
-    warn = lambda text : print(f'{time_now()} [[bold underline yellow]WARN[/]]:\t{text}')
+    def system(text): print(f'{time_now()} {text}')
 
-    error = lambda text : print(f'{time_now()} [[bold underline red]ERR![/]]:\t{text}')
+    def warn(text): print(f'{time_now()} [[bold underline yellow]WARN[/]]:\t{text}')
 
-    success = lambda text : print(f'{time_now()} [[bold #32cd32]OK[/]]:\t{text}')
-    
-    notice = lambda text : print(f'{time_now()} [[bold]NOTE[/]]:\t{text}')
+    def error(text): print(f'{time_now()} [[bold underline red]ERR![/]]:\t{text}')
+
+    def success(text): print(f'{time_now()} [[bold #32cd32]OK[/]]:\t{text}')
+
+    def notice(text): print(f'{time_now()} [[bold]NOTE[/]]:\t{text}')
