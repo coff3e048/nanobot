@@ -49,7 +49,7 @@ class botManagement(commands.Cog):
         except Exception as e:
             await ctx.reply(f'```{e}```')
 
-    @commands.command(name='sysinfo')
+    @commands.command(name='sysinfo', aliases=['botinfo'])
     async def client_sysinfo(self, ctx: commands.Context):
         # https://cog-creators.github.io/discord-embed-sandbox/
         embed = discord.Embed(
@@ -66,10 +66,13 @@ class botManagement(commands.Cog):
             name='Discord User', value=f'{self.bot.user}\n{self.bot.user.mention}', inline=True
         )
         embed.add_field(
-            name='Python Version', value=f'`{platform.python_implementation()} {platform.python_version()}`', inline=False
+            name='Python version', value=f'`{platform.python_implementation()} {platform.python_version()}`', inline=False
         )
         embed.add_field(
-            name='Nextcord Version', value=f'`{nextcord.__version__}`', inline=True
+            name='Nextcord version', value=f'`{nextcord.__version__}`', inline=True
+        )
+        embed.add_field(
+            name='Bot version', value=f'`{env.version}`', inline=True
         )
         embed.add_field(
             name='OS', value=f'`{sysconfig.get_platform()} {platform.release()}`', inline=False
@@ -87,6 +90,7 @@ class botManagement(commands.Cog):
         guildlist = bot.guilds
         await ctx.reply(f'{guildlist}')
 
+    # IGNORE THIS, NO WORKIE
     @bmg.group(name='exec', aliases=['exe'])
     async def cmdmgmt(self, ctx: commands.Context, *, cmd: str):
         subprocesspipe = asyncio.subprocess.PIPE
