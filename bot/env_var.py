@@ -2,7 +2,7 @@ import json
 import logging
 import os
 from console import console
-from os import getenv
+from os import getenv 
 
 # Valid environment variables:
 #
@@ -18,7 +18,7 @@ from os import getenv
 
 
 class env():
-    
+
     updatemsg = getenv('UPDATEMSG', True)
 
     # Cosmetic name of the bot instance
@@ -34,17 +34,13 @@ class env():
     userid = getenv('BOTID')
 
     # Default bot invite (could be another link)
-    #botinvite = getenv('INVITE', "f"https://discord.com/oauth2/{bot.userid}&scope=bot)
+    # botinvite = getenv('INVITE', "f"https://discord.com/oauth2/{bot.userid}&scope=bot)
 
     # Setting bot token
     token = getenv('TOKEN')
     if not token:
-        console.error(
-            f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
-        try:
-            token = str(input('>> '))
-        except KeyboardInterrupt:
-            pass
+        console.error(f"Invalid or missing token in environment, Please input your token.\n\t\t\tYou can find your Discord bot token at https://discord.com/developer")
+        token = str(input('>> '))
 
     # Instance log level
     # Log levels:
@@ -60,6 +56,10 @@ class env():
     # Default Discord status.
     statustype = getenv('ACTIVITYTYPE', 'listening')
     botstatus = getenv('STATUS', f'{prefix}')
+
+    # Discord API Intents settings
+    intents_members = getenv('INTENTS_MEMBERS', True)
+    intents_guilds = getenv('INTENTS_GUILDS', True)
 
     # Bot version
     _versionjson = json.load(open('bot/version.json'))
