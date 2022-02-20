@@ -1,13 +1,13 @@
 import discord
-import logging
 import os
+import nextcord
 from env_var import env
 from console import console
 from discord import Color
 from nextcord.ext import commands
 
 
-def envlogger(self, ctx: commands.Context):
+def envlogger(self, ctx):
     global command
     global server
     global author
@@ -29,25 +29,18 @@ def envlogger(self, ctx: commands.Context):
     # This one could be dangerous, as it also writes a log onto the filesystem.
     if loglevel >= 3:
         command = ctx.message.content
-        if not os.path.exists('log'):
-            os.mkdir('log')
-        logger = logging.getLogger('nextcord')
-        logger.setLevel(logging.DEBUG)
-        handler = logging.FileHandler(
-            filename='log/nextcord.log', encoding='utf-8', mode='w')
-        handler.setFormatter(logging.Formatter(
-            '%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-        logger.addHandler(handler)
 
 
 class ErrorHandler(commands.Cog):
     """A cog for global error handling."""
 
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
+
     @commands.Cog.listener()
-    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError, response: str = None, reaction: str = None):
+    async def on_command_error(self, ctx: commands.Context, error: commands.CommandError, response = None, reaction = None):
         """A global error handler cog."""
         if isinstance(error, commands.CommandNotFound):
             reaction = '❓'
@@ -63,7 +56,6 @@ class ErrorHandler(commands.Cog):
             response = f"Missing a required argument: {error.param}\n```{error}```"
         elif isinstance(error, commands.NotOwner):
             reaction = '😳'
-            response = f"Only the bot owner can use this command."
         else:
             response = f"```{error}```"
 
@@ -71,28 +63,32 @@ class ErrorHandler(commands.Cog):
             await ctx.reply(embed=discord.Embed(
                 description=response,
                 color=Color.red()
-            ), delete_after=30)
+            ), 
+            delete_after=30)
         elif reaction != None:
             await ctx.message.add_reaction(reaction)
 
         # Log the error in the terminal interface
         envlogger(self, ctx)
         console.error(
-            f'({server}) {author} used {command} and failed with: [red]{error}[/]')
+            f'({server}) {author} used {command} and raised an error: [red]{error}[/]')
+
 
     @commands.Cog.listener()
     async def on_command(self, ctx: commands.Context):
         envlogger(self, ctx)
         console.botlog(f'({server}) {author} used {command}')
 
-    @commands.Cog.listener()
-    async def on_guild_join(self, ctx: commands.Context):
-        envlogger(self, ctx)
-        console.botlog(f'Joined guild {server}')
 
     @commands.Cog.listener()
-    async def on_guild_remove(self, ctx: commands.Context):
-        envlogger(self, ctx)
+    async def on_guild_join(self, guild):
+        envlogger(self)
+        console.botlog(f'Joined guild {server}')
+
+
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
+        envlogger(self)
         console.botlog(f'Left guild {server}')
 
 
