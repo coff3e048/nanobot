@@ -1,7 +1,7 @@
-print("Importing modules")
 import time
-# Log the amount of time it takes to start the bot
-start_time = time.time()
+print("Importing modules")
+start_time = time.time()    # Log the amount of time it takes to start the bot
+
 import asyncio
 from aiohttp import request
 from art import text2art
@@ -16,6 +16,7 @@ import sys
 import os
 import platform
 import psutil
+# from IMPORTANT.keep_alive import keep_alive
 
 
 author = "coff3e"
@@ -45,13 +46,10 @@ elif statustype == 'watching':
 elif statustype == 'listening':
     statustype = discord.ActivityType.listening
 
-# Try intents, if it's not enabled on the dev page then complain. I hope thats how this works, anyway.
-try:
-    intents = discord.Intents.default()
-    intents.members = True
-    intents.guilds = True
-except Exception as e:
-    console.error(e)
+# Discord API Intents
+intents = discord.Intents.all()
+intents.members = env.intents_members
+intents.guilds = env.intents_guilds
 activity = discord.Activity(name=env.botstatus, type=statustype)
 
 
@@ -82,39 +80,57 @@ def returnln(returns=1):
         sys.stdout.write("\033[K")  # Flush the line
 
 
-def timed(_end_time, _start_time, x):
-    return round((_end_time - _start_time) * x)
+# Time-to-process calculation
+def timed(_end_time, _start_time, x): return round((_end_time - _start_time) * x)
 
 
-# Load bot cogs in bot/cogs
-def cogservice(filepath):
+async def botupdate(URL: str = f"https://raw.githubusercontent.com/get-coff3e/nanobot/{ver_branch}/bot/version.json"):
+    async with request("GET", URL, headers={}) as response:
+        # if the updatemsg environment variable is unchaged or set to true, we run this.
+        if env.updatemsg:
+            console.log("Connecting to GitHub to check for updates...")
+            if response.status == 200:
+                data = await response.json(content_type=None)
+                # grab .JSON data from GitHub
+                newversion = data["botversion"]
+                returnln()
+                if newversion != version:
+                    console.notice(
+                        f"Newest nanobot version on GitHub doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tCurrent Instance:\t{version}\n\t\t\tLatest Update:\t\t{newversion}\n\t\t\tBranch: {ver_branch}\n\t\t\tIf you would like to disable this functionality, set [bold orange]UPDATEMSG[/] to False in your environment")
+            else:
+                returnln()
+                print(
+                    f"Problem reaching GitHub. HTTP Response: {response.status}")
+
+
+def default_cogservice(filepath):
+    console.error(
+        f"'{filepath}' wasn't found. Create the file with basic cogs? (Y/n)")
+    i = input('>> ')
+    if 'y' in i:
+        basic_cogs = [
+            'errorhandler',
+            'botmgr',
+            'help',
+            'cogs.testing.admin',
+            'cogs.base.basecmd',
+            'cogs.base.pkgmgr'
+        ]
+        return basic_cogs
+
+
+def cogservice(filepath: str ='config/autoload.json'):
     # These cogs are fallback cogs, in the event that no service file is present the bot will instead load these.
     console.log(f"Finding {filepath}")
     returnln()
-    if os.path.exists(filepath):    # filepath is defined in the function call
+    # filepath is defined in the function call
+    if os.path.exists(filepath):
+        autoload = json.load(open(filepath))
         console.success(f"Found {filepath}")
-        with open(filepath, 'r') as service:
-            cogsenabled = service.read().split()
+        cogsenabled = autoload['cogs']
     else:
         # Ask if the user wants to create a service file with the basic fallback cogs
-        console.error(
-            f"'{filepath}' wasn't found. Create the file with basic cogs? (Y/n)")
-        useri = input('>> ')
-        if 'y' in useri:
-            basic_cogs = [
-                  'errorhandler',
-                  'botmgr',
-                  'help',
-                  'cogs.testing.admin',
-                  'cogs.base.basecmd',
-                  'cogs.base.pkgmgr'
-                  ]
-            cogsenabled = basic_cogs
-            if not os.path.exists('config'):
-                os.mkdir('config')
-                with open('config/service.txt', 'w') as f:
-                    for cogs in cogsenabled:
-                        f.write(f"{cogs}\n")
+        cogsenabled = default_cogservice(filepath)
     for cogs in cogsenabled:
         # Start loading cogs
         try:
@@ -126,31 +142,17 @@ def cogservice(filepath):
             console.success(
                 f"loaded {cogs} (took {timed(cog_end_time,cog_start_time,1000)}ms)")
         except Exception as e:
+            cog_end_time = time.time()
             returnln()
             console.error(
                 f"loading {cogs} failed:\n({e} (took {timed(cog_end_time,cog_start_time,1000)}ms)")
-
-
-async def botupdate(URL: str = f"https://raw.githubusercontent.com/get-coff3e/nanobot/{ver_branch}/bot/version.json"):
-    async with request("GET", URL, headers={}) as response:
-        if env.updatemsg:
-            if response.status == 200:
-                data = await response.json(content_type=None)
-                newversion = data["botversion"]
-                if newversion != version:
-                    console.notice(
-                        f"Newest nanobot version on github doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tCurrent Instance:\t{version}\n\t\t\tLatest Update:\t\t{newversion}\n\t\t\tBranch: {ver_branch}\n\t\t\tIf you would like to disable this functionality, set [bold orange]UPDATEMSG[/] to False in your environment")
-            else:
-                print(
-                    f"Problem reaching GitHub. HTTP Response: {response.status}")
 
 
 @bot.event
 async def on_ready():
     connect_end_time = time.time()
     returnln()
-    console.success(
-        f'Connected to Discord API! (took {timed(connect_end_time,connect_start_time,1000)}ms)\n')
+    console.success(f'Connected to Discord API! (took {timed(connect_end_time,connect_start_time,1000)}ms)\n')
     # nanobot startup ascii art
     console.nanostyle(
         text2art(name, 'rnd-small')
@@ -172,24 +174,24 @@ async def on_ready():
 
 # printing list of guilds the bot is joined into
     console.botlog("Joined guilds:")
-    joined = bot.guilds
+    servers = bot.guilds
     count = []
-    if len(joined) > 1:
-        for guilds in joined:
+    if len(servers):
+        for guilds in servers:
             try:
                 count.append(guilds)
-                print(f'\t\t\t{len(count)} -\t{guilds}')
+                print(f'\t\t\t{len(count)} -\t{guilds}\t\t(ID: {guilds.id})')
             except Exception as e:
                 console.error(e)
-        console.botlog(f'Total joined guilds: {len(joined)}')
+        console.botlog(f'Total joined guilds: {len(servers)}')
     else:
         console.botlog(f"Not joined into any guilds. Invite the bot using: https://discord.com/oauth2/{bot.user.id}&scope=bot")
 
     if intents.members:
         users = bot.users
 # Uncomment these lines below to print out all users the bot sees. Otherwise, it will only show you how many there are.
-        #console.botlog(f"Found users:")
-        #count = []
+        # console.botlog(f"Found users:")
+        # count = []
         # for member in users:
         #    try:
         #        count.append(member)
@@ -199,13 +201,11 @@ async def on_ready():
         console.botlog(f"Total unique users: {len(users)}")
 
 # load cogs from cogservice function
-    cogservice('config/service.txt')
+    cogservice()
 
 # print the time it took to start the bot
     end_time = time.time()
-    console.log(
-        f"Took {timed(end_time,start_time,1000)}ms ({timed(end_time,start_time,1)}s) to start-up"
-    )
+    console.log(f"Took {timed(end_time,start_time,1000)}ms ({timed(end_time,start_time,1)}s) to start-up")
 
     await botupdate()
 
@@ -216,4 +216,5 @@ if __name__ == "__main__":
     try:
         bot.run(env.token)
     except Exception as e:
+        returnln()
         console.error(e)
