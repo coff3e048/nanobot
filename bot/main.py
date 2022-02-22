@@ -1,6 +1,6 @@
 import time
 print("Importing modules")
-start_time = time.time()    # Log the amount of time it takes to start the bot
+start_time = time.time()    # Log the amount of time it takes to start the bot + import needed Python modules
 
 import asyncio
 from aiohttp import request
@@ -34,7 +34,7 @@ inspect(platform.uname())
 osplatform = platform.system()
 if osplatform != "Linux":
     console.warn(
-        f"{osplatform.capitalize()} ISN'T TESTED. USE AT YOUR OWN RISK."
+        f"{osplatform.upper()} ISN'T TESTED. USE AT YOUR OWN RISK."
     )
 
 
@@ -94,7 +94,7 @@ async def botupdate(URL: str = f"https://raw.githubusercontent.com/get-coff3e/na
                 # grab .JSON data from GitHub
                 newversion = data["botversion"]
                 returnln()
-                if newversion != version:
+                if newversion != version and "DEV" not in env.version:
                     console.notice(
                         f"Newest nanobot version on GitHub doesn't match the one installed. It may be outdated, please consider updating.\n\t\t\tQueried URL:\t\t{URL}\n\t\t\tCurrent Instance:\t{version}\n\t\t\tLatest Update:\t\t{newversion}\n\t\t\tBranch: {ver_branch}\n\t\t\tIf you would like to disable this functionality, set [bold orange]UPDATEMSG[/] to False in your environment")
             else:

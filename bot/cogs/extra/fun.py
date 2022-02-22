@@ -47,7 +47,7 @@ class Fun(commands.Cog):
             await ctx.reply(file=discord.File(data, f'ascii-{ctx.author.id}.txt'))
 
     @commands.command(name="battle")
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def auto_battle(self, ctx, member: discord.Member = None):
         if member == None or member == ctx.author:
             await ctx.reply("Suicide is not an option!")
@@ -81,17 +81,17 @@ class Fun(commands.Cog):
                 ).set_footer(text=points_footer))
                 await asyncio.sleep(2)
 
+            winnerembed = discord.Embed(
+                description=f"{winner.mention} wins!").set_footer(text=points_footer)
             if user[0] == user[1]:
                 embedmsg = discord.Embed(
                     description="It's a tie!").set_footer(text=points_footer)
             elif user[0] > user[1]:
                 winner = ctx.author
-                embedmsg = discord.Embed(
-                    description=f"{winner.mention} wins!").set_footer(text=points_footer)
+                embedmsg = winnerembed
             elif user[0] < user[1]:
                 winner = member
-                embedmsg = discord.Embed(
-                    description=f"{winner.mention} wins!").set_footer(text=points_footer)
+                embedmsg = winnerembed
 
             await msg.edit(embed=embedmsg)
 
