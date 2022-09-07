@@ -1,4 +1,4 @@
-# NOTE: Project is currently dormant. Don't expect any often changes
+# NOTE: Project is currently dormant. Don't expect any changes soon
 
 # nanobot
 nanobot is a Discord bot utilizing the [nextcord](https://github.com/nextcord/nextcord) python API.
